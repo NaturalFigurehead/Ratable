@@ -19,6 +19,8 @@ var fromPicConfirm = false
 var pictureURL = ""
 var scoreID = ""
 var cuScoreDif: Double = 0
+var cuRank: Double = 0
+var cuError = false
 var currentUser: [String: Int] = Dictionary()
 func setCurrentUser() {
     pront("cu")
@@ -29,65 +31,27 @@ func setCurrentUser() {
             let array = objects as! [PFObject]
             let user = array[0]
             pictureURL = user["picture_url"] as! String
-            defaults.setObject(pictureURL, forKey: "Profile_Picture")
+            if pictureURL != "" {
+                defaults.setObject(pictureURL, forKey: "Profile_Picture")
+            }
             scoreID = user.objectId!
             currentUser["Index"] = user["index"] as? Int
-            currentUser["Total_Score"] = user["score"] as? Int
+            currentUser["Total_Score"] = user["total_score"] as? Int
             currentUser["Votes"] = user["votes"] as? Int
             currentUser["Total_Score_Given"] = user["score_given"] as? Int
             currentUser["Votes_Given"] = user["votes_given"] as? Int
             cuScoreDif = (user["score_difference"] as? Double)!
+            cuRank = (user["rank"] as? Double)!
             currentUser["n10"] = user["n10"] as? Int
+        }
+        else {
+            cuError = true
         }
     })
 }
 
 var adFrequency = 20
 
-/*func ssetCurrentUser() {
-    pront("cu")
-    var query = PFQuery(className:"Users")
-    query.getObjectInBackgroundWithId(currentParseID()) {
-        (user: PFObject?, error: NSError?) -> Void in
-        if error != nil {
-            pront("error")
-        } else if let user = user {
-            currentUserI["Index"] = user["Index"] as? Int
-            currentUserS["Facebook_ID"] = user["Facebook_ID"] as? String
-            currentUserS["Name"] = user["Name"] as? String
-            currentUserS["First_Name"] = user["First_Name"] as? String
-            currentUserS["Email"] = user["Email"] as? String
-            currentUserS["Gender"] = user["Gender"] as? String
-            currentUserS["Location"] = user["Location"] as? String
-            currentUserS["Picture_URL"] = user["Picture_URL"] as? String
-            currentUserI["Total_Score"] = user["Total_Score"] as? Int
-            currentUserI["Votes"] = user["Votes"] as? Int
-            currentUserI["Total_Score_Given"] = user["Total_Score_Given"] as? Int
-            currentUserI["Votes_Given"] = user["Votes_Given"] as? Int
-            currentUserI["n10"] = user["n10"] as? Int
-        }
-    }
-}*/
-
-/*func getCurrentUser() {
-    PFCloud.callFunctionInBackground("getCurrentUser", withParameters: ["id": currentParseID()]) {
-        (response: AnyObject?, error: NSError?) -> Void in
-        let user = response as! PFObject
-        currentUserI["Index"] = user["Index"] as? Int
-        currentUserS["Facebook_ID"] = user["Facebook_ID"] as? String
-        currentUserS["Name"] = user["Name"] as? String
-        currentUserS["First_Name"] = user["First_Name"] as? String
-        currentUserS["Email"] = user["Email"] as? String
-        currentUserS["Gender"] = user["Gender"] as? String
-        currentUserS["Location"] = user["Location"] as? String
-        currentUserS["Picture_URL"] = user["Picture_URL"] as? String
-        currentUserI["Total_Score"] = user["Total_Score"] as? Int
-        currentUserI["Votes"] = user["Votes"] as? Int
-        currentUserI["Total_Score_Given"] = user["Total_Score_Given"] as? Int
-        currentUserI["Votes_Given"] = user["Votes_Given"] as? Int
-        currentUserI["n10"] = user["n10"] as? Int
-    }
-}*/
 
 func currentID() -> String {
     if defaults.objectForKey("Facebook_ID") != nil {
@@ -315,5 +279,31 @@ func queueUsers() {
     
 }
 
-//rating request------------------------------------------------------------------------------------------------------Rating request
+//requests------------------------------------------------------------------------------------------------------requests
+
+
+func requestedRating() -> String {
+    if defaults.objectForKey("Rating") != nil {
+        return defaults.objectForKey("Rating") as! String
+    }
+    return "false"
+}
+
+func requestedShare() -> String {
+    if defaults.objectForKey("Share") != nil {
+        return defaults.objectForKey("Share") as! String
+    }
+    return "false"
+}
+
+func sessionCount() -> Int {
+    return defaults.integerForKey("Sessions")
+}
+
+
+
+
+
+
+
 

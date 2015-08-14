@@ -140,22 +140,37 @@ MaxIndex
 
 
 Left to Do
--Security
-    -Score Data ACL Assignment
-    -Implement and test data setting on Parse
+Security
 -Rank
--Logoff / Delete
-    -Test further and fix bugs
+    -implement some sort of request management
+Logoff / Delete
 -In-App Purchase
     -Test further
 -Design
 -Push Notification
 -Error Responses
 -Efficiency
--Gender Pref Change Response
--Queue settings
--Notifications for Ratings
+Gender Pref Change Response
+Queue settings
+Notifications for Ratings/Sharing
+-Picture Size
+-Analytics
+-Device Management
 
+
+
+
+
+curl -X POST \
+-H "X-Parse-Application-Id: $7UwhtazcuevDkp5mhdGGfZ9ufpjvdENWgVP5COCs" \
+-H "X-Parse-Master-Key: $w58FN1lqJ14qau8YQ6IuilSVd41dJ14Zmj209XKZ" \
+-H "Content-Type: application/json" \
+-d '{"plan":"paid"}' \
+https://api.parse.com/1/jobs/updateRank
+
+
+
+Object function (a,d){if(c.isString(a))return b.Object._create.apply(this,arguments);a=a||{},d&&d.parse&&(a=this.parse(a));var e=b._getValue(this,"defaults");if(e&&(a=c.extend({},e,a)),d&&d.collection&&(this.collection=d.collection),this._serverData={},this._opSetQueue=[{}],this.attributes={},this._hashedJSON={},this._escapedAttributes={},this.cid=c.uniqueId("c"),this.changed={},this._silent={},this._pending={},!this.set(a,{silent:!0}))throw new Error("Can't create an invalid Parse.Object");this.changed={},this._silent={},this._pending={},this._hasData=!0,this._previousAttributes=c.clone(this.attributes),this.initialize.apply(this,arguments)} has no method 'Extend' 
 
 
 

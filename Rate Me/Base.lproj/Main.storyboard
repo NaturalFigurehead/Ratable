@@ -40,7 +40,7 @@
                     <view key="view" contentMode="scaleToFill" id="6dP-Ne-gKW">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" red="0.88235294119999996" green="0.1529411765" blue="0.1647058824" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.74901960779999999" green="0.97254901959999995" blue="0.23137254900000001" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <connections>
                         <segue destination="acF-4M-bFH" kind="presentation" identifier="VC to ASVC" id="AoW-wN-DAX"/>
@@ -100,19 +100,19 @@
                         <nil key="title"/>
                         <barButtonItem key="backBarButtonItem" title=" " id="w0w-Wh-4bO"/>
                         <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="1" id="ba4-75-aAP">
-                            <rect key="frame" x="-61" y="-14" width="123" height="29"/>
+                            <rect key="frame" x="239" y="8" width="123" height="29"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <segments>
                                 <segment title="Profile"/>
                                 <segment title="Rate"/>
                             </segments>
-                            <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
                                 <action selector="segmentedControlAction:" destination="Jo9-km-Gie" eventType="valueChanged" id="jfG-a5-Due"/>
                             </connections>
                         </segmentedControl>
                         <barButtonItem key="rightBarButtonItem" systemItem="play" id="dys-bt-Fjb">
-                            <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
                                 <segue destination="W4k-WZ-Tz9" kind="show" id="U5X-L7-kqf"/>
                             </connections>
@@ -144,15 +144,6 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Lar-zI-OFV" id="ECH-5I-rxe">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Aws-Tc-9OX">
-                                                    <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                    <variation key="heightClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="338" y="-49" width="42" height="21"/>
-                                                    </variation>
-                                                </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gender Preference:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P7q-Wq-aJT">
                                                     <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -191,7 +182,6 @@
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="subviews">
-                                                    <exclude reference="Aws-Tc-9OX"/>
                                                     <exclude reference="P7q-Wq-aJT"/>
                                                     <exclude reference="zcY-V4-HTx"/>
                                                 </mask>
@@ -204,7 +194,6 @@
                                             </variation>
                                             <variation key="heightClass=regular">
                                                 <mask key="subviews">
-                                                    <include reference="Aws-Tc-9OX"/>
                                                     <include reference="P7q-Wq-aJT"/>
                                                     <include reference="zcY-V4-HTx"/>
                                                 </mask>
@@ -259,6 +248,23 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Social" id="EQ3-M8-v3U">
                                 <cells>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="GxB-i7-Ls2" style="IBUITableViewCellStyleDefault" id="IUx-HX-cbW">
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="IUx-HX-cbW" id="ONA-LK-HxX">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Share Ratable" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="GxB-i7-Ls2">
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <variation key="heightClass=regular">
+                                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    </variation>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="yrL-7o-YOE" style="IBUITableViewCellStyleDefault" id="YO9-ye-xLE">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YO9-ye-xLE" id="7vK-JI-DJS">
@@ -649,7 +655,7 @@
                                             <constraint firstAttribute="width" secondItem="WTw-Ot-6BY" secondAttribute="height" multiplier="184:125" id="x9T-fh-Z36"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="GillSans-SemiBold" family="Gill Sans" pointSize="240"/>
-                                        <color key="textColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                         <variation key="default">
                                             <mask key="constraints">
@@ -674,7 +680,7 @@
                                         </variation>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" red="0.40000000600000002" green="1" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.098039217289999994" green="0.098039217289999994" blue="0.098039217289999994" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" secondItem="WTw-Ot-6BY" secondAttribute="height" id="04x-WZ-Lf4"/>
                                     <constraint firstAttribute="width" secondItem="2UP-8E-YfP" secondAttribute="height" multiplier="1:1" id="2SV-WM-5uq"/>
@@ -978,7 +984,7 @@
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
+                                        <color key="backgroundColor" red="0.098039217289999994" green="0.098039217289999994" blue="0.098039217289999994" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
                                             <outlet property="dataLabel" destination="R9C-ZO-qsg" id="YMZ-6x-rpc"/>
                                             <outlet property="titleLabel" destination="fu4-LM-gKW" id="WmW-Tc-mMl"/>
@@ -988,7 +994,7 @@
                                 <sections/>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
+                        <color key="backgroundColor" red="0.098039217289999994" green="0.098039217289999994" blue="0.098039217289999994" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="SVy-nF-Qg0" firstAttribute="leading" secondItem="a6j-fL-0As" secondAttribute="trailing" id="1bK-gs-Bmc"/>
                             <constraint firstItem="SVy-nF-Qg0" firstAttribute="width" secondItem="a6j-fL-0As" secondAttribute="width" id="2ea-D6-zdT"/>
@@ -1125,7 +1131,7 @@
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Vg-TN-X4e">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                        <color key="backgroundColor" red="0.75294117650000003" green="0.12941176469999999" blue="0.14117647059999999" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" red="0.31662458269999999" green="0.79774305560000003" blue="0.31549142130000002" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="192" id="I2N-ea-O5x">
                                                 <variation key="heightClass=regular" constant="0.0"/>
@@ -1251,14 +1257,14 @@
                                     </button>
                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="5" minValue="0.0" maxValue="10" translatesAutoresizingMaskIntoConstraints="NO" id="LII-c5-Sx6">
                                         <rect key="frame" x="0.0" y="-15" width="118" height="31"/>
-                                        <color key="minimumTrackTintColor" red="0.75294117650000003" green="0.12941176469999999" blue="0.14117647059999999" alpha="1" colorSpace="calibratedRGB"/>
-                                        <color key="thumbTintColor" red="0.75294117650000003" green="0.12941176469999999" blue="0.14117647059999999" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="minimumTrackTintColor" red="0.31662458269999999" green="0.79774305560000003" blue="0.31549142130000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="thumbTintColor" red="0.31662458269999999" green="0.79774305560000003" blue="0.31549142130000002" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
                                             <action selector="sliderAction:" destination="tD1-wg-CLX" eventType="valueChanged" id="p1E-lU-xVf"/>
                                         </connections>
                                     </slider>
                                 </subviews>
-                                <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
+                                <color key="backgroundColor" red="0.098039217289999994" green="0.098039217289999994" blue="0.098039217289999994" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstItem="O5J-rc-PXd" firstAttribute="top" secondItem="Fza-o6-12b" secondAttribute="top" constant="8" id="0aL-Tu-o3T"/>
                                     <constraint firstItem="O5J-rc-PXd" firstAttribute="leading" secondItem="LII-c5-Sx6" secondAttribute="trailing" constant="8" id="5xC-7G-FFH"/>
@@ -1466,7 +1472,7 @@
                                         </variation>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" red="0.40000000600000002" green="1" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="C6m-RZ-7Jc" secondAttribute="trailing" constant="52" id="1hb-Ql-bA0">
@@ -1592,7 +1598,7 @@
                                 </connections>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
+                        <color key="backgroundColor" red="0.098039217289999994" green="0.098039217289999994" blue="0.098039217289999994" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="Fza-o6-12b" firstAttribute="leading" secondItem="4ac-N7-tB6" secondAttribute="leading" id="6Fi-Dr-gBH"/>
                             <constraint firstItem="Fza-o6-12b" firstAttribute="height" secondItem="aR4-q0-wED" secondAttribute="height" id="8r7-Du-IDI"/>
@@ -1708,7 +1714,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="gfk-8E-8qH">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="barTintColor" red="0.75294117650000003" green="0.12941176469999999" blue="0.14117647059999999" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="barTintColor" red="1" green="1" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
                         <textAttributes key="titleTextAttributes">
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </textAttributes>
@@ -1752,7 +1758,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="eXd-A8-KWM">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="barTintColor" red="0.31662458266940452" green="0.79774305555555558" blue="0.31549142125480761" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="barTintColor" red="0.098039217293262482" green="0.098039217293262482" blue="0.098039217293262482" alpha="1" colorSpace="calibratedRGB"/>
                         <textAttributes key="titleTextAttributes">
                             <color key="textColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         </textAttributes>
@@ -1790,7 +1796,7 @@
         <image name="Dart" width="512" height="512"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="AoW-wN-DAX"/>
+        <segue reference="iZV-S9-WHD"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
 </document>

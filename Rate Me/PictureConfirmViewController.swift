@@ -29,11 +29,19 @@ class PictureConfirmViewController: UIViewController {
             /*let user = PFObject(withoutDataWithClassName: "Score_Data", objectId: scoreID)
             user["picture_url"] = picToConfirm.source
             user.pinInBackgroundWithName("Current_User")*/
-            picChanged = true
+            if profilePicIsSet() {
+                picChanged = true
+            }
+            else {
+                let user = PFObject(withoutDataWithClassName: "Score_Data", objectId: scoreID)
+                user["picture_url"] = picToConfirm.source
+                user.saveInBackground()
+                defaults.setBool(true, forKey: "Picture_Is_Set")
+            }
             
             //update local url and picture set
             pictureURL = picToConfirm.source
-            defaults.setBool(true, forKey: "Picture_Is_Set")
+            
             
             //transition
             NSNotificationCenter.defaultCenter().postNotificationName("picSaved", object: nil)

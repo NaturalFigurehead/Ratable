@@ -62,6 +62,8 @@ class AlbumSelectionViewController: UITableViewController{
             let graphRequestAlbums : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "\(id)/photos", parameters: ["fields": "images, id"])
             graphRequestAlbums.startWithCompletionHandler({ (connection, result, error) -> Void in
                 
+                pront(result)
+                
                 let data = result["data"] as! NSArray
                 for photo in data {
                     let images = photo["images"] as! NSArray

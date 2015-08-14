@@ -51,8 +51,6 @@ class RateViewController: UIViewController {
     //moving to next user
     func nextUser() {
         pront(userNum)
-        pront(adFrequency)
-        pront((userNum + 1) % adFrequency)
         
         //check to display ad
         if adsRemoved() == "false" {
@@ -87,6 +85,10 @@ class RateViewController: UIViewController {
                 
                 //save scores for the rated user
                 ratedUsers[usersToRate[userNum].id] = String(score)
+                
+                if ratedUsers.count > 8 {
+                    saveRatedUsers()
+                }
                 
             }
             self.score = 5

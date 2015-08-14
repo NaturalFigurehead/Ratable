@@ -33,6 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // start vungle publisher library
         sdk.startWithAppId(appID)
         
+        //in app purchase made
         PFPurchase.addObserverForProduct("ratable.removeads") {
             (transaction: SKPaymentTransaction?) -> Void in
             // Write business logic that should run once this product is purchased.
@@ -65,6 +66,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let types = UIRemoteNotificationType.Badge | UIRemoteNotificationType.Alert | UIRemoteNotificationType.Sound
             application.registerForRemoteNotificationTypes(types)
         }*/
+        
+        
         
         
         // Override point for customization after application launch.
@@ -110,19 +113,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         if ratedUsers.count > 0 {
-            PFCloud.callFunctionInBackground("saveRatings", withParameters: ratedUsers) {
-                (response: AnyObject?, error: NSError?) -> Void in
-                
-                pront(2)
-                if error == nil {
-                    ratedUsers = [:]
-                }
-                    
-                else {
-                    
-                }
-                
-            }
+            saveRatedUsers()
         }
 
     }

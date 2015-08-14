@@ -151,13 +151,18 @@ class ViewController: UIViewController {
                                                 
                                                 dispatch_async(dispatch_get_main_queue()) {
                                                     
-                                                    //move to next view controller
-                                                    picsLoaded = true
-                                                    if profilePicIsSet() {
-                                                        self.presentMaster()
+                                                    if !cuError {
+                                                        // move on
+                                                        picsLoaded = true
+                                                        if profilePicIsSet() {
+                                                            self.presentMaster()
+                                                        }
+                                                        else {
+                                                            getAlbumData()
+                                                        }
                                                     }
                                                     else {
-                                                        getAlbumData()
+                                                        displayAlertView("Error", "There was an error connecting. Please try again later.", "Ok", self)
                                                     }
                                                     
                                                 }
@@ -178,6 +183,7 @@ class ViewController: UIViewController {
                 else {
 
                     let userList: [PFObject] = objects as! Array
+                    pront(userList.count)
                     let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
                     dispatch_async(dispatch_get_global_queue(priority, 0)) {
                         
@@ -191,6 +197,7 @@ class ViewController: UIViewController {
                         //queue up users
                         var i = 0
                         while i < 5 {
+                            pront(smallUsersToRate[i].id)
                             let userToRate = User(user: smallUsersToRate[i])
                             usersToRate.append(userToRate)
                             i += 1
@@ -198,14 +205,20 @@ class ViewController: UIViewController {
                         
                         dispatch_async(dispatch_get_main_queue()) {
                             
-                            // move on
-                            picsLoaded = true
-                            if profilePicIsSet() {
-                                self.presentMaster()
+                            if !cuError {
+                                // move on
+                                picsLoaded = true
+                                if profilePicIsSet() {
+                                    self.presentMaster()
+                                }
+                                else {
+                                    getAlbumData()
+                                }
                             }
                             else {
-                                getAlbumData()
+                                displayAlertView("Error", "There was an error connecting. Please try again later.", "Ok", self)
                             }
+                            
                         }
                     }
                 }

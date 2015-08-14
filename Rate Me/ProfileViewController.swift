@@ -57,8 +57,9 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
             cell.dataLabel?.text = "\(votes) times"
         case 1:
             cell.titleLabel?.text = "You are in the top"
-            let value: Int = currentUser["Votes"]!
-            cell.dataLabel?.text = "87%"
+            var value: Double = 100 * cuRank
+            value = round(10 * value) / 10
+            cell.dataLabel?.text = "\(value)%"
         case 2:
             cell.titleLabel?.text = "You were rated 10"
             let value: Int = currentUser["n10"]!

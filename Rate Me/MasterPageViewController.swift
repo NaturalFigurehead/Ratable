@@ -60,6 +60,27 @@ class MasterPageViewController: UIViewController, UIScrollViewDelegate {
         rate.didMoveToParentViewController(self)
         
         self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width * 2, self.view.frame.size.height - 64)
+        
+        //increment session count
+        if !(sessionCount() > 0) {
+            defaults.setInteger(1, forKey: "Sessions")
+        }
+        else {
+            defaults.setInteger(sessionCount() + 1, forKey: "Sessions")
+        }
+        
+        //request rating or share
+        if sessionCount() % 2 == 0 {
+            if requestedRating() == "false" {
+                displayRatingRequest(self)
+            }
+        }
+        else {
+            if requestedShare() == "false" {
+                displayShareRequest(self)
+            }
+        }
+        
     }
     
     func displayAlbumSelection(note: NSNotification) {

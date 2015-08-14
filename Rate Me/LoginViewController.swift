@@ -33,12 +33,18 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         else {
             // If you ask for multiple permissions at once, you
             // should check if specific permissions missing
-            if result.grantedPermissions.contains("email") {
+            if result.grantedPermissions.contains("user_photos") && result.grantedPermissions.contains("public_profile"){
                 // Do work
+                self.login()
+            }
+            else {
+                displayAlertView("Oops", "Ratable needs access to your public profile and photos. Please make sure to allow access to those things.", "Ok", self)
+                let loginManager = FBSDKLoginManager()
+                loginManager.logOut()
             }
             
             //sign up / login
-            self.login()
+            
             
         }
     }
@@ -111,6 +117,9 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
                                 
                             } else {
                                 // The login failed. Check error to see why.
+                                displayAlertView("Sorry", "There was an error signing up. Please try again later.", "Ok", self)
+                                let loginManager = FBSDKLoginManager()
+                                loginManager.logOut()
                             }
                         }
                         
@@ -141,6 +150,9 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
                                 }
                                 else {
                                     // The login failed. Check error to see why.
+                                    displayAlertView("Sorry", "There was an error logging in. Please try again later.", "Ok", self)
+                                    let loginManager = FBSDKLoginManager()
+                                    loginManager.logOut()
                                 }
                             }
                         //}

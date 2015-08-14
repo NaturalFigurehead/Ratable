@@ -60,6 +60,11 @@ class InfoViewController: UITableViewController, UIPickerViewDataSource, UIPicke
     
     func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
         PFUser.logOut()
+        voteCount = 0
+        scoreCount = 0
+        scoreDifCount = 0
+        picChanged = false
+        ratedUsers = [:]
         self.presentViewController(vcWithName("LVC")!, animated: true, completion: nil)
     }
     
@@ -123,14 +128,17 @@ class InfoViewController: UITableViewController, UIPickerViewDataSource, UIPicke
         if indexPath.section == 2 {
             switch indexPath.row {
             case 0:
-                //rate
-                UIApplication.sharedApplication().openURL(NSURL(string: "http://stackoverflow.com/questions/26704852/osx-swift-open-url-in-default-browser")!)
+                //share
+                socialShare(self)
             case 1:
-                //follow
-                UIApplication.sharedApplication().openURL(NSURL(string: "http://stackoverflow.com/questions/26704852/osx-swift-open-url-in-default-browser")!)
+                //rate
+                goToURL("https://itunes.apple.com/us/app/ratable/id1025633125?ls=1&mt=8")
             case 2:
+                //follow
+                goToURL("https://itunes.apple.com/us/app/ratable/id1025633125?ls=1&mt=8")
+            case 3:
                 //like
-                UIApplication.sharedApplication().openURL(NSURL(string: "http://stackoverflow.com/questions/26704852/osx-swift-open-url-in-default-browser")!)
+                goToURL("https://itunes.apple.com/us/app/ratable/id1025633125?ls=1&mt=8")
             default:
                 break
             }
@@ -139,10 +147,10 @@ class InfoViewController: UITableViewController, UIPickerViewDataSource, UIPicke
             switch indexPath.row {
             case 0:
                 //privacy policy
-                UIApplication.sharedApplication().openURL(NSURL(string: "http://stackoverflow.com/questions/26704852/osx-swift-open-url-in-default-browser")!)
+                goToURL("https://itunes.apple.com/us/app/ratable/id1025633125?ls=1&mt=8")
             case 1:
                 //terms of service
-                UIApplication.sharedApplication().openURL(NSURL(string: "http://stackoverflow.com/questions/26704852/osx-swift-open-url-in-default-browser")!)
+                goToURL("https://itunes.apple.com/us/app/ratable/id1025633125?ls=1&mt=8")
             default:
                 break
             }
@@ -166,15 +174,39 @@ class InfoViewController: UITableViewController, UIPickerViewDataSource, UIPicke
             //user confirms deletion
             let useAction = UIAlertAction(title: "Continue", style: .Default) { (action) in
                 
+                //delete user data on score data object
                 let data = PFObject(withoutDataWithClassName: "Score_Data", objectId: scoreID)
                 data["picture_url"] = ""
                 data["first_name"] = ""
                 data.saveInBackground()
+                
+                //delete user
                 PFUser.currentUser()?.deleteInBackgroundWithBlock({ (success: Bool, error: NSError?) -> Void in
                     if success {
+                        
+                        //revert save value
+                        voteCount = 0
+                        scoreCount = 0
+                        scoreDifCount = 0
+                        picChanged = false
+                        ratedUsers = [:]
+                        
+                        //unpin cached users to rate
+                        PFObject.unpinAllObjectsInBackgroundWithName("To_Rate")
+                        
+                        //logout of facebook
+                        let loginManager = FBSDKLoginManager()
+                        loginManager.logOut()
+                        
+                        //logout user
+                        PFUser.logOut()
+                        
+                        //move to login view 
                         self.presentViewController(vcWithName("LVC")!, animated: true, completion: nil)
+                        
                     }
                 })
+                
                 
             }
             alert.addAction(useAction)

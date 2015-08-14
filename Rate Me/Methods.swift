@@ -8,6 +8,21 @@
 
 import UIKit
 
+func saveRatedUsers() {
+    PFCloud.callFunctionInBackground("saveRatings", withParameters: ratedUsers) {
+        (response: AnyObject?, error: NSError?) -> Void in
+        
+        if error == nil {
+            ratedUsers = [:]
+        }
+            
+        else {
+            
+        }
+        
+    }
+}
+
 func getAlbumData() {
     
     if (FBSDKAccessToken.currentAccessToken() != nil) {
@@ -91,35 +106,6 @@ func vcWithName(name: String) -> UIViewController?
 func openURL(address: String) {
     let url = NSURL(string: address)
     UIApplication.sharedApplication().openURL(url!)
-}
-
-func intToString(num: Int) -> String {
-    switch num{
-    case 0:
-        return "Zero"
-    case 1:
-        return "One"
-    case 2:
-        return "Two"
-    case 3:
-        return "Three"
-    case 4:
-        return "Four"
-    case 5:
-        return "Five"
-    case 6:
-        return "Six"
-    case 7:
-        return "Seven"
-    case 8:
-        return "Eight"
-    case 9:
-        return "Nine"
-    case 10:
-        return "Ten"
-    default:
-        return String(num)
-    }
 }
 
 var container: UIView = UIView()
@@ -257,19 +243,68 @@ func RBResizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
     return newImage
 }
 
-func generateUserBlocks(start: Int, amount: Int) {
-    var i = start
-    while i < start + amount {
-        let block = PFObject(className: "User_Blocks")
-        block["Number"] = i
-        block["User_Count"] = 0
-        block.saveInBackground()
-        i += 1
-    }
-}
-
 func displayAlertView(title: String, message: String, action: String, viewController: UIViewController) {
     let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
     alert.addAction(UIAlertAction(title: action, style: UIAlertActionStyle.Default, handler: nil))
     viewController.presentViewController(alert, animated: true, completion: nil)
+}
+
+func displayRatingRequest(viewController: UIViewController) {
+    let alert = UIAlertController(title: "Howdy!", message: "I hope you're enjoying Ratable. Would you pretty please give it a rating on the app store? It would make me very happy.", preferredStyle: UIAlertControllerStyle.Alert)
+
+    let sureAction = UIAlertAction(title: "Sure", style: .Default) { (action) in
+        
+        goToURL("https://itunes.apple.com/us/app/ratable/id1025633125?ls=1&mt=8")
+        
+    }
+    alert.addAction(sureAction)
+    
+    alert.addAction(UIAlertAction(title: "Later", style: UIAlertActionStyle.Default, handler: nil))
+    
+    let noAction = UIAlertAction(title: "No", style: .Default) { (action) in
+        
+        defaults.setObject("true", forKey: "Rating")
+        
+    }
+    alert.addAction(noAction)
+    
+    viewController.presentViewController(alert, animated: true, completion: nil)
+}
+
+func displayShareRequest(viewController: UIViewController) {
+    let alert = UIAlertController(title: "Howdy!", message: "Please share.", preferredStyle: UIAlertControllerStyle.Alert)
+    
+    let sureAction = UIAlertAction(title: "Share", style: .Default) { (action) in
+        
+        socialShare(viewController)
+        
+    }
+    alert.addAction(sureAction)
+    
+    alert.addAction(UIAlertAction(title: "Later", style: UIAlertActionStyle.Default, handler: nil))
+    
+    let noAction = UIAlertAction(title: "No", style: .Default) { (action) in
+        
+        defaults.setObject("true", forKey: "Share")
+        
+    }
+    alert.addAction(noAction)
+    
+    viewController.presentViewController(alert, animated: true, completion: nil)
+}
+
+func socialShare(viewController: UIViewController) {
+    var sharingItems = [AnyObject]()
+    
+    //sharingItems.append("")
+    let url = NSURL(string: "https://itunes.apple.com/us/app/ratable/id1025633125?ls=1&mt=8")
+    sharingItems.append(url!)
+    
+    let activityViewController = UIActivityViewController(activityItems: sharingItems, applicationActivities: nil)
+    activityViewController.excludedActivityTypes = [UIActivityTypeCopyToPasteboard,UIActivityTypeAirDrop,UIActivityTypeAddToReadingList,UIActivityTypeAssignToContact,UIActivityTypePostToTencentWeibo,UIActivityTypePostToVimeo,UIActivityTypePrint,UIActivityTypeSaveToCameraRoll,UIActivityTypePostToWeibo]
+    viewController.presentViewController(activityViewController, animated: true, completion: nil)
+}
+
+func goToURL(url: String) {
+    UIApplication.sharedApplication().openURL(NSURL(string: url)!)
 }

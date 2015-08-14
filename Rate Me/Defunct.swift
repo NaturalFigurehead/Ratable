@@ -350,6 +350,52 @@ i += 1
 //[{"gender":"male","id":"Ua2ppnURSi","name":"Oliver","pictureURL":"","totalScore":"0","votes":"0"},{"gender":"male","id":"F2pL8Y3nBa","name":"Oliver","pictureURL":"","totalScore":"0","votes":"0"},{"gender":"male","id":"6LaSRqciQN","name":"Oliver","pictureURL":"","totalScore":"0","votes":"0"}]
 //[{"gender":"male","id":"Ua2ppnURSi","name":"Oliver","pictureURL":"","totalScore":"0","votes":"0"},{"gender":"male","id":"F2pL8Y3nBa","name":"Oliver","pictureURL":"","totalScore":"0","votes":"0"},{"gender":"male","id":"6LaSRqciQN","name":"Oliver","pictureURL":"","totalScore":"0","votes":"0"}]
 */
+
+
+/*func ssetCurrentUser() {
+pront("cu")
+var query = PFQuery(className:"Users")
+query.getObjectInBackgroundWithId(currentParseID()) {
+(user: PFObject?, error: NSError?) -> Void in
+if error != nil {
+pront("error")
+} else if let user = user {
+currentUserI["Index"] = user["Index"] as? Int
+currentUserS["Facebook_ID"] = user["Facebook_ID"] as? String
+currentUserS["Name"] = user["Name"] as? String
+currentUserS["First_Name"] = user["First_Name"] as? String
+currentUserS["Email"] = user["Email"] as? String
+currentUserS["Gender"] = user["Gender"] as? String
+currentUserS["Location"] = user["Location"] as? String
+currentUserS["Picture_URL"] = user["Picture_URL"] as? String
+currentUserI["Total_Score"] = user["Total_Score"] as? Int
+currentUserI["Votes"] = user["Votes"] as? Int
+currentUserI["Total_Score_Given"] = user["Total_Score_Given"] as? Int
+currentUserI["Votes_Given"] = user["Votes_Given"] as? Int
+currentUserI["n10"] = user["n10"] as? Int
+}
+}
+}*/
+
+/*func getCurrentUser() {
+PFCloud.callFunctionInBackground("getCurrentUser", withParameters: ["id": currentParseID()]) {
+(response: AnyObject?, error: NSError?) -> Void in
+let user = response as! PFObject
+currentUserI["Index"] = user["Index"] as? Int
+currentUserS["Facebook_ID"] = user["Facebook_ID"] as? String
+currentUserS["Name"] = user["Name"] as? String
+currentUserS["First_Name"] = user["First_Name"] as? String
+currentUserS["Email"] = user["Email"] as? String
+currentUserS["Gender"] = user["Gender"] as? String
+currentUserS["Location"] = user["Location"] as? String
+currentUserS["Picture_URL"] = user["Picture_URL"] as? String
+currentUserI["Total_Score"] = user["Total_Score"] as? Int
+currentUserI["Votes"] = user["Votes"] as? Int
+currentUserI["Total_Score_Given"] = user["Total_Score_Given"] as? Int
+currentUserI["Votes_Given"] = user["Votes_Given"] as? Int
+currentUserI["n10"] = user["n10"] as? Int
+}
+}*/
 /*
 
 func signUp() {
