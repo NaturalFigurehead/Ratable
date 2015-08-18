@@ -30,10 +30,13 @@ class ViewController: UIViewController {
             
             //get ad frequency
             if adsRemoved() == "false" {
-                PFCloud.callFunctionInBackground("adFrequency", withParameters: ["":""]) {
+                PFCloud.callFunctionInBackground("globalSettings", withParameters: ["":""]) {
                     (response: AnyObject?, error: NSError?) -> Void in
                     if error == nil {
-                        adFrequency = response as! Int
+                        let result = response as! String
+                        let resultData = result.componentsSeparatedByString(" ")
+                        adFrequency = resultData[0].toInt()!
+                        saveRate = resultData[1].toInt()!
                     }
                 }
             }
@@ -151,18 +154,13 @@ class ViewController: UIViewController {
                                                 
                                                 dispatch_async(dispatch_get_main_queue()) {
                                                     
-                                                    if !cuError {
-                                                        // move on
-                                                        picsLoaded = true
-                                                        if profilePicIsSet() {
-                                                            self.presentMaster()
-                                                        }
-                                                        else {
-                                                            getAlbumData()
-                                                        }
+                                                    // move on
+                                                    picsLoaded = true
+                                                    if profilePicIsSet() {
+                                                        self.presentMaster()
                                                     }
                                                     else {
-                                                        displayAlertView("Error", "There was an error connecting. Please try again later.", "Ok", self)
+                                                        getAlbumData()
                                                     }
                                                     
                                                 }
@@ -205,18 +203,13 @@ class ViewController: UIViewController {
                         
                         dispatch_async(dispatch_get_main_queue()) {
                             
-                            if !cuError {
-                                // move on
-                                picsLoaded = true
-                                if profilePicIsSet() {
-                                    self.presentMaster()
-                                }
-                                else {
-                                    getAlbumData()
-                                }
+                            // move on
+                            picsLoaded = true
+                            if profilePicIsSet() {
+                                self.presentMaster()
                             }
                             else {
-                                displayAlertView("Error", "There was an error connecting. Please try again later.", "Ok", self)
+                                getAlbumData()
                             }
                             
                         }

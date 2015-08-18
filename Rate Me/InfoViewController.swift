@@ -39,6 +39,8 @@ class InfoViewController: UITableViewController, UIPickerViewDataSource, UIPicke
         loginView.center.x = self.view.center.x
         loginView.readPermissions = ["public_profile", "email", "user_friends", "user_photos"]
         loginView.delegate = self
+        
+        buttonEvent("Info", "Open")
     }
     
     func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError!) {
@@ -59,6 +61,9 @@ class InfoViewController: UITableViewController, UIPickerViewDataSource, UIPicke
     }
     
     func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
+        
+        buttonEvent("Info", "Facebook Logout")
+        
         PFUser.logOut()
         voteCount = 0
         scoreCount = 0
@@ -81,6 +86,8 @@ class InfoViewController: UITableViewController, UIPickerViewDataSource, UIPicke
     }
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        buttonEvent("Info", "Gender Pick")
+        
         switch row {
         case 0:
             if currentGenderPref() != "male" {
@@ -130,15 +137,19 @@ class InfoViewController: UITableViewController, UIPickerViewDataSource, UIPicke
             case 0:
                 //share
                 socialShare(self)
+                buttonEvent("Info", "Share")
             case 1:
                 //rate
                 goToURL("https://itunes.apple.com/us/app/ratable/id1025633125?ls=1&mt=8")
+                buttonEvent("Info", "Rate")
             case 2:
                 //follow
-                goToURL("https://itunes.apple.com/us/app/ratable/id1025633125?ls=1&mt=8")
+                goToURL("https://twitter.com/OlivrRzk")
+                buttonEvent("Info", "Follow")
             case 3:
                 //like
-                goToURL("https://itunes.apple.com/us/app/ratable/id1025633125?ls=1&mt=8")
+                goToURL("https://www.facebook.com/Ratable")
+                buttonEvent("Info", "Like")
             default:
                 break
             }
@@ -148,9 +159,11 @@ class InfoViewController: UITableViewController, UIPickerViewDataSource, UIPicke
             case 0:
                 //privacy policy
                 goToURL("https://itunes.apple.com/us/app/ratable/id1025633125?ls=1&mt=8")
+                buttonEvent("Info", "Privacy Policy")
             case 1:
                 //terms of service
                 goToURL("https://itunes.apple.com/us/app/ratable/id1025633125?ls=1&mt=8")
+                buttonEvent("Info", "Terms of Service")
             default:
                 break
             }
@@ -163,6 +176,7 @@ class InfoViewController: UITableViewController, UIPickerViewDataSource, UIPicke
             } else {
                 self.showSendMailErrorAlert()
             }
+            buttonEvent("Info", "Email")
         }
         else if indexPath.section == 5 && indexPath.row == 1 {
             
@@ -173,6 +187,8 @@ class InfoViewController: UITableViewController, UIPickerViewDataSource, UIPicke
             
             //user confirms deletion
             let useAction = UIAlertAction(title: "Continue", style: .Default) { (action) in
+                
+                buttonEvent("Info", "Delete")
                 
                 //delete user data on score data object
                 let data = PFObject(withoutDataWithClassName: "Score_Data", objectId: scoreID)
@@ -213,6 +229,8 @@ class InfoViewController: UITableViewController, UIPickerViewDataSource, UIPicke
             self.presentViewController(alert, animated: true, completion: nil)
             
         }
+        
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     func configuredMailComposeViewController() -> MFMailComposeViewController {
@@ -243,152 +261,108 @@ class InfoViewController: UITableViewController, UIPickerViewDataSource, UIPicke
         //PFObject.unpinAllObjectsInBackgroundWithName("To_Rate")
         pront("q")
         
-        //check if enough users to rate are cached
-        let query = PFQuery(className: "Score_Data")
-        query.fromPinWithName("To_Rate")
-        query.limit = 1000
-        query.findObjectsInBackgroundWithBlock({ (objects: [AnyObject]?, error: NSError?) -> Void in
+        //get a list of already rated users
+        let qRated = PFQuery(className: "Score_Data")
+        qRated.fromPinWithName("Rated")
+        qRated.limit = 1000
+        qRated.findObjectsInBackgroundWithBlock({ (objects: [AnyObject]?, error: NSError?) -> Void in
             
             if error == nil {
                 
-                //if there are less than ten then get some more
-                if objects!.count < 10 {
+                //get max index
+                let rated: [PFObject] = objects as! Array
+                let qIndex = PFQuery(className: "Max_Index")
+                qIndex.getObjectInBackgroundWithId("ur8NfMGzMl") {
+                    (maxIndex: PFObject?, error: NSError?) -> Void in
                     
-                    //get a list of already rated users
-                    let qRated = PFQuery(className: "Score_Data")
-                    qRated.fromPinWithName("Rated")
-                    qRated.limit = 1000
-                    qRated.findObjectsInBackgroundWithBlock({ (objects: [AnyObject]?, error: NSError?) -> Void in
+                    if error != nil {
+                        pront("error")
+                    }
                         
-                        if error == nil {
-                            
-                            //get max index
-                            let rated: [PFObject] = objects as! Array
-                            let qIndex = PFQuery(className: "Max_Index")
-                            qIndex.getObjectInBackgroundWithId("ur8NfMGzMl") {
-                                (maxIndex: PFObject?, error: NSError?) -> Void in
-                                
-                                if error != nil {
-                                    pront("error")
-                                }
-                                    
-                                else if let maxIndex = maxIndex {
-                                    
-                                    //list random indexes in the max index range
-                                    var indexes: [Int] = []
-                                    var max = maxIndex["i"] as! Int
-                                    var i = 0
-                                    while i < 900 && max > 100 {
-                                        let n = randRange(1, max - 100)
-                                        indexes.append(n)
-                                        i += 1
-                                    }
-                                    i = 0
-                                    while i < 100 {
-                                        let n = (max - i)
-                                        indexes.append(n)
-                                        i += 1
-                                    }
-                                    indexes.sort {
-                                        return $0 < $1
-                                    }
-                                    
-                                    //fetch users with those indexes
-                                    let qUser = PFQuery(className: "Score_Data")
-                                    qUser.whereKey("index", containedIn: indexes)
-                                    if currentGenderPref() != "all" {
-                                        qUser.whereKey("gender", equalTo: currentGenderPref())
-                                    }
-                                    qUser.whereKey("picture_url", notEqualTo: "")
-                                    qUser.limit = 1000
-                                    qUser.findObjectsInBackgroundWithBlock({ (objects: [AnyObject]?, error: NSError?) -> Void in
-                                        
-                                        if error == nil {
-                                            
-                                            //filter users
-                                            let users: [PFObject] = objects as! Array
-                                            let unrated: [PFObject] = users.filter{ !contains(rated, $0) }
-                                            
-                                            //cache all the users and label "To_Rate"
-                                            PFObject.pinAllInBackground(unrated, withName: "To_Rate")
-                                            
-                                            //queue users
-                                            let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
-                                            dispatch_async(dispatch_get_global_queue(priority, 0)) {
-                                                
-                                                // set values to start values
-                                                smallUsersToRate = []
-                                                usersToRate = []
-                                                userNum = 0
-                                                
-                                                //create list of small users
-                                                for user in users {
-                                                    let userToRate = SmallUser(object: user)
-                                                    smallUsersToRate.append(userToRate)
-                                                }
-                                                smallUsersToRate = shuffle(smallUsersToRate)
-                                                
-                                                //queue of users
-                                                var i = 0
-                                                while i < 5 {
-                                                    let userToRate = User(user: smallUsersToRate[i])
-                                                    usersToRate.append(userToRate)
-                                                    i += 1
-                                                }
-                                                
-                                                dispatch_async(dispatch_get_main_queue()) {
-                                                    
-                                                    //move to next view controller
-                                                    self.presentViewController(vcWithName("MPVCNC")!, animated: true, completion: nil)
-                                                    
-                                                }
-                                            }
-                                        }
-                                        else {
-                                            
-                                        }
-                                    })
-                                }
-                            }
-                        }
-                        else {
-                        }
-                    })
-                }
-                    
-                else {
-                    
-                    let userList: [PFObject] = objects as! Array
-                    let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
-                    dispatch_async(dispatch_get_global_queue(priority, 0)) {
+                    else if let maxIndex = maxIndex {
                         
-                        //make list of small users
-                        for user in userList {
-                            let userToRate = SmallUser(object: user)
-                            smallUsersToRate.append(userToRate)
-                        }
-                        smallUsersToRate = shuffle(smallUsersToRate)
-                        
-                        //queue up users
+                        //list random indexes in the max index range
+                        var indexes: [Int] = []
+                        var max = maxIndex["i"] as! Int
                         var i = 0
-                        while i < 5 {
-                            let userToRate = User(user: smallUsersToRate[i])
-                            usersToRate.append(userToRate)
+                        while i < 900 && max > 100 {
+                            let n = randRange(1, max - 100)
+                            indexes.append(n)
                             i += 1
                         }
-                        
-                        dispatch_async(dispatch_get_main_queue()) {
-                            
-                            // move on
-                            self.presentViewController(vcWithName("MPVCNC")!, animated: true, completion: nil)
+                        i = 0
+                        while i < 100 {
+                            let n = (max - i)
+                            indexes.append(n)
+                            i += 1
                         }
+                        indexes.sort {
+                            return $0 < $1
+                        }
+                        
+                        //fetch users with those indexes
+                        let qUser = PFQuery(className: "Score_Data")
+                        qUser.whereKey("index", containedIn: indexes)
+                        if currentGenderPref() != "all" {
+                            qUser.whereKey("gender", equalTo: currentGenderPref())
+                        }
+                        qUser.whereKey("picture_url", notEqualTo: "")
+                        qUser.limit = 1000
+                        qUser.findObjectsInBackgroundWithBlock({ (objects: [AnyObject]?, error: NSError?) -> Void in
+                            
+                            if error == nil {
+                                
+                                //filter users
+                                let users: [PFObject] = objects as! Array
+                                let unrated: [PFObject] = users.filter{ !contains(rated, $0) }
+                                
+                                //cache all the users and label "To_Rate"
+                                PFObject.pinAllInBackground(unrated, withName: "To_Rate")
+                                
+                                //queue users
+                                let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
+                                dispatch_async(dispatch_get_global_queue(priority, 0)) {
+                                    
+                                    // set values to start values
+                                    smallUsersToRate = []
+                                    usersToRate = []
+                                    userNum = 0
+                                    
+                                    //create list of small users
+                                    for user in users {
+                                        let userToRate = SmallUser(object: user)
+                                        smallUsersToRate.append(userToRate)
+                                    }
+                                    smallUsersToRate = shuffle(smallUsersToRate)
+                                    
+                                    //queue of users
+                                    var i = 0
+                                    while i < 5 {
+                                        let userToRate = User(user: smallUsersToRate[i])
+                                        usersToRate.append(userToRate)
+                                        i += 1
+                                    }
+                                    
+                                    dispatch_async(dispatch_get_main_queue()) {
+                                        
+                                        //move to next view controller
+                                        self.presentViewController(vcWithName("MPVCNC")!, animated: true, completion: nil)
+                                        
+                                    }
+                                }
+                            }
+                            else {
+                                
+                            }
+                        })
                     }
                 }
             }
             else {
-                
             }
         })
+        
+        
         
     }
     

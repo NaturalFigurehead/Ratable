@@ -12,13 +12,6 @@
 		5E0D94761B4C6C4E00FBFDCC /* RateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0D94751B4C6C4E00FBFDCC /* RateViewController.swift */; };
 		5E2A6E171B6141EF003F9614 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2A6E161B6141EF003F9614 /* User.swift */; };
 		5E2A6E191B67FCA4003F9614 /* SmallUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2A6E181B67FCA4003F9614 /* SmallUser.swift */; };
-		5E2A6E231B68233D003F9614 /* __vungle.db in Resources */ = {isa = PBXBuildFile; fileRef = 5E2A6E1C1B68233D003F9614 /* __vungle.db */; };
-		5E2A6E241B68233D003F9614 /* vg_close.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E2A6E1D1B68233D003F9614 /* vg_close.png */; };
-		5E2A6E251B68233D003F9614 /* vg_cta.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E2A6E1E1B68233D003F9614 /* vg_cta.png */; };
-		5E2A6E261B68233D003F9614 /* vg_mute_off.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E2A6E1F1B68233D003F9614 /* vg_mute_off.png */; };
-		5E2A6E271B68233D003F9614 /* vg_mute_on.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E2A6E201B68233D003F9614 /* vg_mute_on.png */; };
-		5E2A6E281B68233D003F9614 /* vg_privacy.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E2A6E211B68233D003F9614 /* vg_privacy.png */; };
-		5E2A6E291B68233D003F9614 /* VungleSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E2A6E221B68233D003F9614 /* VungleSDK.framework */; };
 		5E2A6E2B1B682411003F9614 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E2A6E2A1B682411003F9614 /* AdSupport.framework */; };
 		5E2A6E2D1B682424003F9614 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E2A6E2C1B682424003F9614 /* AVFoundation.framework */; };
 		5E2A6E2F1B682450003F9614 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E2A6E2E1B682450003F9614 /* CoreMedia.framework */; };
@@ -66,6 +59,13 @@
 		5ED9C7A71B31CA9F0080E872 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5ED9C7A61B31CA9F0080E872 /* Accounts.framework */; };
 		5ED9C7A91B31CAA50080E872 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5ED9C7A81B31CAA50080E872 /* Social.framework */; };
 		5EE817101B6F1D990038C37F /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EE8170F1B6F1D990038C37F /* GameKit.framework */; };
+		5EE8171A1B8026860038C37F /* __vungle.db in Resources */ = {isa = PBXBuildFile; fileRef = 5EE817131B8026860038C37F /* __vungle.db */; };
+		5EE8171B1B8026860038C37F /* vg_close.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EE817141B8026860038C37F /* vg_close.png */; };
+		5EE8171C1B8026860038C37F /* vg_cta.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EE817151B8026860038C37F /* vg_cta.png */; };
+		5EE8171D1B8026860038C37F /* vg_mute_off.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EE817161B8026860038C37F /* vg_mute_off.png */; };
+		5EE8171E1B8026860038C37F /* vg_mute_on.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EE817171B8026860038C37F /* vg_mute_on.png */; };
+		5EE8171F1B8026860038C37F /* vg_privacy.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EE817181B8026860038C37F /* vg_privacy.png */; };
+		5EE817201B8026860038C37F /* VungleSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EE817191B8026860038C37F /* VungleSDK.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -96,13 +96,6 @@
 		5E0D94751B4C6C4E00FBFDCC /* RateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RateViewController.swift; sourceTree = "<group>"; };
 		5E2A6E161B6141EF003F9614 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		5E2A6E181B67FCA4003F9614 /* SmallUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmallUser.swift; sourceTree = "<group>"; };
-		5E2A6E1C1B68233D003F9614 /* __vungle.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = __vungle.db; sourceTree = "<group>"; };
-		5E2A6E1D1B68233D003F9614 /* vg_close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vg_close.png; sourceTree = "<group>"; };
-		5E2A6E1E1B68233D003F9614 /* vg_cta.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vg_cta.png; sourceTree = "<group>"; };
-		5E2A6E1F1B68233D003F9614 /* vg_mute_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vg_mute_off.png; sourceTree = "<group>"; };
-		5E2A6E201B68233D003F9614 /* vg_mute_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vg_mute_on.png; sourceTree = "<group>"; };
-		5E2A6E211B68233D003F9614 /* vg_privacy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vg_privacy.png; sourceTree = "<group>"; };
-		5E2A6E221B68233D003F9614 /* VungleSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = VungleSDK.framework; sourceTree = "<group>"; };
 		5E2A6E2A1B682411003F9614 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		5E2A6E2C1B682424003F9614 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		5E2A6E2E1B682450003F9614 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -155,6 +148,13 @@
 		5ED9C7A61B31CA9F0080E872 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		5ED9C7A81B31CAA50080E872 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		5EE8170F1B6F1D990038C37F /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
+		5EE817131B8026860038C37F /* __vungle.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = __vungle.db; sourceTree = "<group>"; };
+		5EE817141B8026860038C37F /* vg_close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vg_close.png; sourceTree = "<group>"; };
+		5EE817151B8026860038C37F /* vg_cta.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vg_cta.png; sourceTree = "<group>"; };
+		5EE817161B8026860038C37F /* vg_mute_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vg_mute_off.png; sourceTree = "<group>"; };
+		5EE817171B8026860038C37F /* vg_mute_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vg_mute_on.png; sourceTree = "<group>"; };
+		5EE817181B8026860038C37F /* vg_privacy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vg_privacy.png; sourceTree = "<group>"; };
+		5EE817191B8026860038C37F /* VungleSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = VungleSDK.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -184,10 +184,10 @@
 				5ED9C7991B31CA180080E872 /* MobileCoreServices.framework in Frameworks */,
 				5ED9C7971B31CA110080E872 /* CoreLocation.framework in Frameworks */,
 				5ED9C7911B31C9E50080E872 /* AudioToolbox.framework in Frameworks */,
+				5EE817201B8026860038C37F /* VungleSDK.framework in Frameworks */,
 				5ED9C7881B3094860080E872 /* Bolts.framework in Frameworks */,
 				5ED9C78F1B31C7800080E872 /* Parse.framework in Frameworks */,
 				5ED9C78A1B30948E0080E872 /* FBSDKCoreKit.framework in Frameworks */,
-				5E2A6E291B68233D003F9614 /* VungleSDK.framework in Frameworks */,
 				5ED9C78C1B3094900080E872 /* FBSDKLoginKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -260,28 +260,6 @@
 				5E2A6E181B67FCA4003F9614 /* SmallUser.swift */,
 			);
 			name = Rate;
-			sourceTree = "<group>";
-		};
-		5E2A6E1A1B68233D003F9614 /* VungleSDK.embeddedframework */ = {
-			isa = PBXGroup;
-			children = (
-				5E2A6E1B1B68233D003F9614 /* Resources */,
-				5E2A6E221B68233D003F9614 /* VungleSDK.framework */,
-			);
-			path = VungleSDK.embeddedframework;
-			sourceTree = "<group>";
-		};
-		5E2A6E1B1B68233D003F9614 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				5E2A6E1C1B68233D003F9614 /* __vungle.db */,
-				5E2A6E1D1B68233D003F9614 /* vg_close.png */,
-				5E2A6E1E1B68233D003F9614 /* vg_cta.png */,
-				5E2A6E1F1B68233D003F9614 /* vg_mute_off.png */,
-				5E2A6E201B68233D003F9614 /* vg_mute_on.png */,
-				5E2A6E211B68233D003F9614 /* vg_privacy.png */,
-			);
-			path = Resources;
 			sourceTree = "<group>";
 		};
 		5E2A6E3A1B6BE49C003F9614 /* Info */ = {
@@ -368,10 +346,10 @@
 				5E2A6E2E1B682450003F9614 /* CoreMedia.framework */,
 				5E2A6E2C1B682424003F9614 /* AVFoundation.framework */,
 				5E2A6E2A1B682411003F9614 /* AdSupport.framework */,
-				5E2A6E1A1B68233D003F9614 /* VungleSDK.embeddedframework */,
 				5ED9C7A41B31CA5A0080E872 /* libsqlite3.dylib */,
 				5ED9C7A21B31CA500080E872 /* libz.dylib */,
 				5ED9C7A01B31CA3E0080E872 /* SystemConfiguration.framework */,
+				5EE817111B8026860038C37F /* VungleSDK.embeddedframework 2 */,
 				5ED9C79E1B31CA330080E872 /* StoreKit.framework */,
 				5ED9C79C1B31CA2C0080E872 /* Security.framework */,
 				5ED9C79A1B31CA220080E872 /* QuartzCore.framework */,
@@ -390,6 +368,28 @@
 				5ED9C7A61B31CA9F0080E872 /* Accounts.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5EE817111B8026860038C37F /* VungleSDK.embeddedframework 2 */ = {
+			isa = PBXGroup;
+			children = (
+				5EE817121B8026860038C37F /* Resources */,
+				5EE817191B8026860038C37F /* VungleSDK.framework */,
+			);
+			path = "VungleSDK.embeddedframework 2";
+			sourceTree = "<group>";
+		};
+		5EE817121B8026860038C37F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				5EE817131B8026860038C37F /* __vungle.db */,
+				5EE817141B8026860038C37F /* vg_close.png */,
+				5EE817151B8026860038C37F /* vg_cta.png */,
+				5EE817161B8026860038C37F /* vg_mute_off.png */,
+				5EE817171B8026860038C37F /* vg_mute_on.png */,
+				5EE817181B8026860038C37F /* vg_privacy.png */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -479,14 +479,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5E2A6E261B68233D003F9614 /* vg_mute_off.png in Resources */,
+				5EE8171D1B8026860038C37F /* vg_mute_off.png in Resources */,
 				5ED9C76D1B3094650080E872 /* Main.storyboard in Resources */,
 				5ED9C7721B3094650080E872 /* LaunchScreen.xib in Resources */,
-				5E2A6E231B68233D003F9614 /* __vungle.db in Resources */,
-				5E2A6E271B68233D003F9614 /* vg_mute_on.png in Resources */,
-				5E2A6E281B68233D003F9614 /* vg_privacy.png in Resources */,
-				5E2A6E251B68233D003F9614 /* vg_cta.png in Resources */,
-				5E2A6E241B68233D003F9614 /* vg_close.png in Resources */,
+				5EE8171A1B8026860038C37F /* __vungle.db in Resources */,
+				5EE8171B1B8026860038C37F /* vg_close.png in Resources */,
+				5EE8171F1B8026860038C37F /* vg_privacy.png in Resources */,
+				5EE8171E1B8026860038C37F /* vg_mute_on.png in Resources */,
+				5EE8171C1B8026860038C37F /* vg_cta.png in Resources */,
 				5ED9C76F1B3094650080E872 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -663,13 +663,16 @@
 					"/Users/oliverreznik/Downloads/parse-library-1.7.4",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/VungleSDK.embeddedframework",
+					"$(PROJECT_DIR)/VungleSDK.embeddedframework",
+					2,
 				);
 				INFOPLIST_FILE = "Rate Me/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = Ratable;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "84a195ed-190e-47a8-a0a5-6963e226aafd";
 				SWIFT_OBJC_BRIDGING_HEADER = "Rate Me/Bridging-Header.h";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -685,13 +688,16 @@
 					"/Users/oliverreznik/Downloads/parse-library-1.7.4",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/VungleSDK.embeddedframework",
+					"$(PROJECT_DIR)/VungleSDK.embeddedframework",
+					2,
 				);
 				INFOPLIST_FILE = "Rate Me/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = Ratable;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "84a195ed-190e-47a8-a0a5-6963e226aafd";
 				SWIFT_OBJC_BRIDGING_HEADER = "Rate Me/Bridging-Header.h";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

@@ -256,14 +256,24 @@ func displayRatingRequest(viewController: UIViewController) {
         
         goToURL("https://itunes.apple.com/us/app/ratable/id1025633125?ls=1&mt=8")
         
+        buttonEvent("Rate Request", "Yes")
+        
     }
     alert.addAction(sureAction)
     
-    alert.addAction(UIAlertAction(title: "Later", style: UIAlertActionStyle.Default, handler: nil))
+    let laterAction = UIAlertAction(title: "Later", style: .Default) { (action) in
+        
+        buttonEvent("Rate Request", "Later")
+        
+    }
+    
+    alert.addAction(laterAction)
     
     let noAction = UIAlertAction(title: "No", style: .Default) { (action) in
         
         defaults.setObject("true", forKey: "Rating")
+        
+        buttonEvent("Rate Request", "Yes")
         
     }
     alert.addAction(noAction)
@@ -278,14 +288,24 @@ func displayShareRequest(viewController: UIViewController) {
         
         socialShare(viewController)
         
+        buttonEvent("Share Request", "Yes")
+        
     }
     alert.addAction(sureAction)
     
-    alert.addAction(UIAlertAction(title: "Later", style: UIAlertActionStyle.Default, handler: nil))
+    let laterAction = UIAlertAction(title: "Later", style: .Default) { (action) in
+        
+        buttonEvent("Share Request", "Later")
+        
+    }
+    
+    alert.addAction(laterAction)
     
     let noAction = UIAlertAction(title: "No", style: .Default) { (action) in
         
         defaults.setObject("true", forKey: "Share")
+        
+        buttonEvent("Share Request", "No")
         
     }
     alert.addAction(noAction)
@@ -302,9 +322,15 @@ func socialShare(viewController: UIViewController) {
     
     let activityViewController = UIActivityViewController(activityItems: sharingItems, applicationActivities: nil)
     activityViewController.excludedActivityTypes = [UIActivityTypeCopyToPasteboard,UIActivityTypeAirDrop,UIActivityTypeAddToReadingList,UIActivityTypeAssignToContact,UIActivityTypePostToTencentWeibo,UIActivityTypePostToVimeo,UIActivityTypePrint,UIActivityTypeSaveToCameraRoll,UIActivityTypePostToWeibo]
+    activityViewController.popoverPresentationController?.sourceView = viewController.view
     viewController.presentViewController(activityViewController, animated: true, completion: nil)
 }
 
 func goToURL(url: String) {
     UIApplication.sharedApplication().openURL(NSURL(string: url)!)
+}
+
+func buttonEvent(location: String, button: String) {
+    let dimensions = [location: button]
+    PFAnalytics.trackEvent("Action", dimensions: dimensions)
 }

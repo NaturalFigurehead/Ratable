@@ -18,10 +18,16 @@ class User: NSObject {
     init(name: String, source: String, id: String, totalVotes: Int, totalScore: Int) {
         self.votes = Double(totalVotes)
         self.name = name
-        let url =  NSURL(string: source)
-        let data = NSData(contentsOfURL: url!)
-        let image = UIImage(data: data!)
-        self.image = image!
+        if id == "empty" {
+            self.image = UIImage(named: "Circle")!
+        }
+        else {
+           let url =  NSURL(string: source)
+            let data = NSData(contentsOfURL: url!)
+            let image = UIImage(data: data!)
+            self.image = image!
+        }
+        
         self.id = id
         let total = totalScore
         let votes = totalVotes

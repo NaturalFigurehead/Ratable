@@ -16,6 +16,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
+        UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
+        
         Parse.enableLocalDatastore()
         
         // Initialize Parse.
@@ -103,7 +105,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             user.incrementKey("score_given", byAmount: scoreCount)
             user.incrementKey("score_difference", byAmount: scoreDifCount)
             user["picture_url"] = currentProfilePic()
-            user.saveInBackground()
+            user.saveEventually()
             
             //revert to base values
             voteCount = 0
@@ -141,7 +143,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             user.incrementKey("score_given", byAmount: scoreCount)
             user.incrementKey("score_difference", byAmount: cuScoreDif)
             user["picture_url"] = currentProfilePic()
-            user.saveInBackground()
+            user.saveEventually()
             
             //revert to base values
             voteCount = 0

@@ -24,6 +24,11 @@ class MasterPageViewController: UIViewController, UIScrollViewDelegate {
             break; 
         }
     }
+    @IBAction func logoButton(sender: UIBarButtonItem) {
+        goToURL("http://ratableapp.com/")
+        buttonEvent("Master", "Logo")
+    }
+    
     
     //var viewWasSelected = false
     
@@ -80,7 +85,7 @@ class MasterPageViewController: UIViewController, UIScrollViewDelegate {
                 displayShareRequest(self)
             }
         }
-        
+
     }
     
     func displayAlbumSelection(note: NSNotification) {
@@ -107,6 +112,14 @@ class MasterPageViewController: UIViewController, UIScrollViewDelegate {
     
     func popViewController(note: NSNotification) {
         self.removeFromParentViewController()
+    }
+    
+    override  func supportedInterfaceOrientations() -> Int {
+        return UIInterfaceOrientation.Portrait.rawValue
+    }
+    
+    override func shouldAutorotate() -> Bool {
+        return false
     }
 
 }

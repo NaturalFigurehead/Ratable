@@ -15,12 +15,15 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     @IBOutlet weak var personalScore: UILabel!
     @IBOutlet weak var dataTable: UITableView!
     @IBAction func fbAction(sender: UIButton) {
+        buttonEvent("Profile", "Facebook Share")
         showFaceSheet()
     }
     @IBAction func twAction(sender: AnyObject) {
+        buttonEvent("Profile", "Twitter Share")
         showTweetSheet()
     }
     @IBAction func changePicture(sender: UIButton) {
+        buttonEvent("Profile", "Change Picture")
         getAlbumData()
     }
     
@@ -39,7 +42,12 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
         else {
             let score: Int =  Int(10 * (total / votes))
             let newScore: Double = Double(score) / 10
-            self.personalScore.text = "\(newScore)"
+            if newScore == 10.0 {
+                self.personalScore.text = "10"
+            }
+            else {
+                self.personalScore.text = "\(newScore)"
+            }
         }
     }
     
@@ -121,6 +129,7 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
             case SLComposeViewControllerResult.Done:
                 //Add code here to deal with it being completed
                 //Remember that dimissing the view is done for you, and sending the tweet to social media is automatic too. You could use this to give in game rewards?
+                buttonEvent("Profile", "Twitter Success")
                 break
             }
         }
@@ -146,11 +155,12 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
             case SLComposeViewControllerResult.Done:
                 //Add code here to deal with it being completed
                 //Remember that dimissing the view is done for you, and sending the tweet to social media is automatic too. You could use this to give in game rewards?
+                buttonEvent("Profile", "Facebook Success")
                 break
             }
         }
         
-        faceSheet.setInitialText("Test Twitter") //The default text in the tweet
+        faceSheet.setInitialText("") //The default text in the tweet
         //tweetSheet.addImage(UIImage(named: "TestImage.png")) //Add an image if you like?
         faceSheet.addURL(NSURL(string: "http://twitter.com")) //A url which takes you into safari if tapped on
         

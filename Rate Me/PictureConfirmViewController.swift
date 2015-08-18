@@ -35,7 +35,7 @@ class PictureConfirmViewController: UIViewController {
             else {
                 let user = PFObject(withoutDataWithClassName: "Score_Data", objectId: scoreID)
                 user["picture_url"] = picToConfirm.source
-                user.saveInBackground()
+                user.saveEventually()
                 defaults.setBool(true, forKey: "Picture_Is_Set")
             }
             
@@ -48,6 +48,8 @@ class PictureConfirmViewController: UIViewController {
             fromPicConfirm = true
             self.performSegueWithIdentifier("PCVC to MPVC", sender: self)
             self.removeFromParentViewController()
+            
+            buttonEvent("Picture Confirm", "Confirm")
             
         }
         alert.addAction(useAction)

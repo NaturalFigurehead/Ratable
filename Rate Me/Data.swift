@@ -10,8 +10,13 @@ import UIKit
 
 //settings---------------------------------------------------------------------------------------------------------------settings
 
-//let themeColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)//UIColor(red: 0.80, green: 0.13333, blue: 0.1725, alpha: 1.0)
+let themeColor = UIColor(red: 205, green: 0, blue: 0, alpha: 1)//UIColor(red: 0.80, green: 0.13333, blue: 0.1725, alpha: 1.0)
 var defaults = NSUserDefaults.standardUserDefaults()
+
+
+var adFrequency = 20
+var saveRate = 10
+
 
 var currentVC = 0
 var fromPicConfirm = false
@@ -43,14 +48,37 @@ func setCurrentUser() {
             cuScoreDif = (user["score_difference"] as? Double)!
             cuRank = (user["rank"] as? Double)!
             currentUser["n10"] = user["n10"] as? Int
+            user.pinInBackgroundWithName("Current_User")
         }
         else {
-            cuError = true
+            var localQuery = PFQuery(className:"Score_Data")
+            localQuery.fromPinWithName("Current_User")
+            localQuery.findObjectsInBackgroundWithBlock({ (objects: [AnyObject]?, error: NSError?) -> Void in
+                if error == nil {
+                    let array = objects as! [PFObject]
+                    let user = array[0]
+                    pictureURL = user["picture_url"] as! String
+                    if pictureURL != "" {
+                        defaults.setObject(pictureURL, forKey: "Profile_Picture")
+                    }
+                    scoreID = user.objectId!
+                    currentUser["Index"] = user["index"] as? Int
+                    currentUser["Total_Score"] = user["total_score"] as? Int
+                    currentUser["Votes"] = user["votes"] as? Int
+                    currentUser["Total_Score_Given"] = user["score_given"] as? Int
+                    currentUser["Votes_Given"] = user["votes_given"] as? Int
+                    cuScoreDif = (user["score_difference"] as? Double)!
+                    cuRank = (user["rank"] as? Double)!
+                    currentUser["n10"] = user["n10"] as? Int
+                }
+                else {
+                    
+                }
+            })
         }
     })
 }
 
-var adFrequency = 20
 
 
 func currentID() -> String {
