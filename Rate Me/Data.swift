@@ -242,7 +242,7 @@ func queueUsers() {
                                                 let userToRate = SmallUser(object: user)
                                                 smallUsersToRate.append(userToRate)
                                             }
-                                            smallUsersToRate = shuffle(smallUsersToRate)
+                                            //smallUsersToRate = shuffle(smallUsersToRate)
                                             
                                             //queue of users
                                             var i = 0
@@ -330,7 +330,20 @@ func sessionCount() -> Int {
 
 
 
-
+func testTimeFetch() {
+    let query = PFQuery(className: "Score_Data")
+    query.whereKey("updatedAt", equalTo: "Aug 18, 2015, 16:36")
+    query.findObjectsInBackgroundWithBlock({ (objects: [AnyObject]?, error: NSError?) -> Void in
+        
+        if error == nil {
+            pront(objects!)
+        }
+        else {
+            
+        }
+        
+    })
+}
 
 
 

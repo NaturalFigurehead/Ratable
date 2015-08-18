@@ -19,7 +19,15 @@ class Picture: NSObject {
         let url =  NSURL(string: source)
         let data = NSData(contentsOfURL: url!)
         let image = UIImage(data: data!)
-        self.image = image!
+        if image == nil {
+            let url =  NSURL(string: "https://ratable.files.wordpress.com/2015/08/logo.png?w=544")
+            let data = NSData(contentsOfURL: url!)
+            let image = UIImage(data: data!)
+            self.image = image!
+        }
+        else {
+            self.image = image!
+        }
         self.id = id
         super.init()
     }

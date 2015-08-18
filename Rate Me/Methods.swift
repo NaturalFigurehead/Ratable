@@ -254,6 +254,8 @@ func displayRatingRequest(viewController: UIViewController) {
 
     let sureAction = UIAlertAction(title: "Sure", style: .Default) { (action) in
         
+        defaults.setObject("true", forKey: "Rating")
+        
         goToURL("https://itunes.apple.com/us/app/ratable/id1025633125?ls=1&mt=8")
         
         buttonEvent("Rate Request", "Yes")
@@ -285,6 +287,8 @@ func displayShareRequest(viewController: UIViewController) {
     let alert = UIAlertController(title: "Howdy!", message: "Please share.", preferredStyle: UIAlertControllerStyle.Alert)
     
     let sureAction = UIAlertAction(title: "Share", style: .Default) { (action) in
+        
+        defaults.setObject("true", forKey: "Share")
         
         socialShare(viewController)
         

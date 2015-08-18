@@ -56,21 +56,20 @@ class RateViewController: UIViewController {
         //check to display ad
         if adsRemoved() == "false" {
             if (userNum + 1) % adFrequency == 0 {
-                //var sdk = VungleSDK.sharedSDK()
-                //sdk.playAd(self, error: nil)
+                var sdk = VungleSDK.sharedSDK()
+                sdk.playAd(self, error: nil)
             }
         }
         
         //if there are enough users loaded
         if picsLoaded && userCount - 2 > userNum {
             
-            usersToRate[userNum] = User(name: "", source: "", id: "empty", totalVotes: 0, totalScore: 0)
+            //usersToRate[userNum] = User(name: "", source: "", id: "empty", totalVotes: 0, totalScore: 0)
             
             let user = PFObject(withoutDataWithClassName: "Score_Data", objectId: usersToRate[userNum].id)
             user.unpinInBackgroundWithName("To_Rate")
             user.pinInBackgroundWithName("Rated")
             
-            userNum += 1
             self.addUser()
             reverseRateAnimation()
             
@@ -100,6 +99,7 @@ class RateViewController: UIViewController {
             self.youScore.text = String(score)
             self.slider.value = 5
             self.checked = false
+            userNum += 1
             
             buttonEvent("Rate", "Next")
             
