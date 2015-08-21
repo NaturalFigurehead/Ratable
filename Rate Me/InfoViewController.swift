@@ -194,35 +194,39 @@ class InfoViewController: UITableViewController, UIPickerViewDataSource, UIPicke
                 let data = PFObject(withoutDataWithClassName: "Score_Data", objectId: scoreID)
                 data["picture_url"] = ""
                 data["first_name"] = ""
-                data.saveInBackground()
-                
-                //delete user
-                PFUser.currentUser()?.deleteInBackgroundWithBlock({ (success: Bool, error: NSError?) -> Void in
+                data.saveInBackgroundWithBlock({ (success: Bool, error: NSError?) -> Void in
                     if success {
-                        
-                        //revert save value
-                        voteCount = 0
-                        scoreCount = 0
-                        scoreDifCount = 0
-                        picChanged = false
-                        ratedUsers = [:]
-                        
-                        //unpin cached users to rate
-                        PFObject.unpinAllObjectsInBackgroundWithName("To_Rate")
-                        
-                        //logout of facebook
-                        let loginManager = FBSDKLoginManager()
-                        loginManager.logOut()
-                        
-                        //logout user
-                        PFUser.logOut()
-                        
-                        //move to login view 
-                        self.presentViewController(vcWithName("LVC")!, animated: true, completion: nil)
+                        //delete user
+                        PFUser.currentUser()?.deleteInBackgroundWithBlock({ (success: Bool, error: NSError?) -> Void in
+                            if success {
+                                
+                                //revert save value
+                                voteCount = 0
+                                scoreCount = 0
+                                scoreDifCount = 0
+                                picChanged = false
+                                ratedUsers = [:]
+                                
+                                //unpin cached users to rate
+                                PFObject.unpinAllObjectsInBackgroundWithName("To_Rate")
+                                
+                                //logout of facebook
+                                let loginManager = FBSDKLoginManager()
+                                loginManager.logOut()
+                                
+                                //logout user
+                                PFUser.logOut()
+                                
+                                //move to login view
+                                self.presentViewController(vcWithName("LVC")!, animated: true, completion: nil)
+                                
+                            }
+                        })
+                    }
+                    else {
                         
                     }
                 })
-                
                 
             }
             alert.addAction(useAction)

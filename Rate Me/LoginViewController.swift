@@ -95,6 +95,9 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
                     //success
                     if error == nil {
                         
+                        //let indexString = response as! String
+                        //maximumIndex = indexString.toInt()!
+                        
                         //login user
                         PFUser.logInWithUsernameInBackground(id, password: id) {
                             (user: PFUser?, error: NSError?) -> Void in

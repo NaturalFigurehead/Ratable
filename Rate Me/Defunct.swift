@@ -9,6 +9,283 @@
 import UIKit
 
 
+//check if enough users to rate are cached
+/*let query = PFQuery(className: "Score_Data")
+query.fromPinWithName("To_Rate")
+query.limit = 1000
+query.findObjectsInBackgroundWithBlock({ (objects: [AnyObject]?, error: NSError?) -> Void in
+
+if error == nil {
+
+//if there are less than ten then get some more
+if objects!.count < 10 {
+
+//get a list of already rated users
+let qRated = PFQuery(className: "Score_Data")
+qRated.fromPinWithName("Rated")
+qRated.limit = 1000
+qRated.findObjectsInBackgroundWithBlock({ (objects: [AnyObject]?, error: NSError?) -> Void in
+
+if error == nil {
+
+//get max index
+let rated: [PFObject] = objects as! Array
+let qIndex = PFQuery(className: "Max_Index")
+qIndex.getObjectInBackgroundWithId("ur8NfMGzMl") {
+(maxIndex: PFObject?, error: NSError?) -> Void in
+
+if error != nil {
+displayAlertView("Error", "There was an error loading data. Please try again later.", "Ok", self)
+}
+
+else if let maxIndex = maxIndex {
+
+//list random indexes in the max index range
+var indexes: [Int] = []
+var max = maxIndex["i"] as! Int
+var i = 0
+while i < 900 && max > 100 {
+let n = randRange(1, max - 100)
+indexes.append(n)
+i += 1
+}
+i = 0
+while i < 100 {
+let n = (max - i)
+indexes.append(n)
+i += 1
+}
+indexes.sort {
+return $0 < $1
+}
+
+//fetch users with those indexes
+let qUser = PFQuery(className: "Score_Data")
+qUser.whereKey("index", containedIn: indexes)
+if currentGenderPref() != "all" {
+qUser.whereKey("gender", equalTo: currentGenderPref())
+}
+qUser.whereKey("picture_url", notEqualTo: "")
+qUser.limit = 1000
+qUser.findObjectsInBackgroundWithBlock({ (objects: [AnyObject]?, error: NSError?) -> Void in
+
+if error == nil {
+
+//filter users
+let users: [PFObject] = objects as! Array
+let unrated: [PFObject] = users.filter{ !contains(rated, $0) }
+
+//cache all the users and label "To_Rate"
+PFObject.pinAllInBackground(unrated, withName: "To_Rate")
+
+self.organizeUsers(unrated)
+
+//queue users
+/*let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
+dispatch_async(dispatch_get_global_queue(priority, 0)) {
+// do some task
+
+//create list of small users
+for user in users {
+let userToRate = SmallUser(object: user)
+smallUsersToRate.append(userToRate)
+}
+smallUsersToRate = shuffle(smallUsersToRate)
+
+//queue of users
+var i = 0
+while i < 5 {
+let userToRate = User(user: smallUsersToRate[i])
+usersToRate.append(userToRate)
+i += 1
+}
+
+dispatch_async(dispatch_get_main_queue()) {
+
+// move on
+picsLoaded = true
+if profilePicIsSet() {
+self.presentMaster()
+}
+else {
+getAlbumData()
+}
+
+}
+}*/
+}
+else {
+displayAlertView("Error", "There was an error loading data. Please try again later.", "Ok", self)
+}
+})
+}
+}
+}
+
+else {
+displayAlertView("Error", "There was an error loading data. Please try again later.", "Ok", self)
+}
+})
+}
+
+else {
+
+let userList: [PFObject] = objects as! Array
+pront(userList.count)
+
+self.organizeUsers(userList)
+
+/*let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
+dispatch_async(dispatch_get_global_queue(priority, 0)) {
+
+//make list of small users
+for user in userList {
+let userToRate = SmallUser(object: user)
+smallUsersToRate.append(userToRate)
+}
+smallUsersToRate = shuffle(smallUsersToRate)
+
+//queue up users
+var i = 0
+while i < 5 {
+pront(smallUsersToRate[i].id)
+let userToRate = User(user: smallUsersToRate[i])
+usersToRate.append(userToRate)
+i += 1
+}
+
+dispatch_async(dispatch_get_main_queue()) {
+
+// move on
+picsLoaded = true
+if profilePicIsSet() {
+self.presentMaster()
+}
+else {
+getAlbumData()
+}
+
+}
+}*/
+}
+}
+else {
+displayAlertView("Error", "There was an error loading data. Please try again later.", "Ok", self)
+}
+})*/
+
+/*var usersQueued = false {
+didSet {
+if usersQueued {
+//self.avgScore.text = String(stringInterpolationSegment: usersToRate[userNum].score)
+self.imageView.image = usersToRate[userNum].image
+}
+}
+}
+
+func queueUsersR() {
+//PFObject.unpinAllObjectsInBackgroundWithName("To_Rate")
+//check if enough users to rate are cached
+let query = PFQuery(className: "Users")
+query.fromPinWithName("To_Rate")
+//query.skip = userNum
+query.limit = 1
+query.skip = 10 + userNum
+query.findObjectsInBackgroundWithBlock({ (objects: [AnyObject]?, error: NSError?) -> Void in
+if error == nil {
+//if there are less than ten then get some more
+if objects!.count < 1 {
+pront("something")
+//get a list of already rated users
+let query2 = PFQuery(className: "Users")
+query2.fromPinWithName("Rated")
+query2.findObjectsInBackgroundWithBlock({ (objects: [AnyObject]?, error: NSError?) -> Void in
+if error == nil {
+let rated: [PFObject] = objects as! Array
+let query3 = PFQuery(className: "Max_Index")
+query3.getObjectInBackgroundWithId("GdsteUx5am") {
+(maxIndex: PFObject?, error: NSError?) -> Void in
+if error != nil {
+pront("error")
+} else if let maxIndex = maxIndex {
+//list random indexes in the max index range
+var indexes: [Int] = []
+var max = maxIndex["i"] as! Int
+var i = 0
+while i < 1000 {
+let n = randRange(0, max)
+indexes.append(n)
+i += 1
+}
+indexes.sort {
+return $0 < $1
+}
+pront(indexes)
+pront(indexes.count)
+//fetch users with those indexes
+let uQuery = PFQuery(className: "Users")
+uQuery.whereKey("Index", containedIn: indexes)
+uQuery.whereKey("Gender", equalTo: currentGenderPref())
+uQuery.limit = 1000
+uQuery.findObjectsInBackgroundWithBlock({ (objects: [AnyObject]?, error: NSError?) -> Void in
+if error == nil {
+let users: [PFObject] = objects as! Array
+let unrated: [PFObject] = users.filter{ !contains(rated, $0) }
+//cache all the users and label "To_Rate"
+for user in unrated {
+user.pinInBackgroundWithName("To_Rate")
+}
+//usersToRate = []
+let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
+dispatch_async(dispatch_get_global_queue(priority, 0)) {
+// do some task
+let pfUserToRate = unrated[0]
+let userToRate = User(object: pfUserToRate)
+dispatch_async(dispatch_get_main_queue()) {
+//self.avgScore.text = String(stringInterpolationSegment: usersToRate[userNum].score)
+//self.imageView.image = usersToRate[userNum].image
+//picsLoaded = true
+}
+}
+}
+else {
+
+}
+})
+}
+}
+}
+else {
+}
+})
+//get the max index of all users
+}
+//if there are ten then empty then add them to the global list
+else {
+//usersToRate = []
+let userList: [PFObject] = objects as! Array
+let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
+dispatch_async(dispatch_get_global_queue(priority, 0)) {
+// do some task
+for user in userList {
+let userToRate = User(object: user)
+usersToRate.append(userToRate)
+}
+dispatch_async(dispatch_get_main_queue()) {
+//self.avgScore.text = String(stringInterpolationSegment: usersToRate[userNum].score)
+//self.imageView.image = usersToRate[userNum].image
+//picsLoaded = true
+pront("Count: \(usersToRate.count)")
+}
+}
+//self.usersQueued = true
+}
+}
+else {
+}
+})
+}*/
+
 /*func queueUsers2() {
 PFObject.unpinAllObjectsInBackgroundWithName("To_Rate")
 pront("q")

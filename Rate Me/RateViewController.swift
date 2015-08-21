@@ -56,8 +56,8 @@ class RateViewController: UIViewController {
         //check to display ad
         if adsRemoved() == "false" {
             if (userNum + 1) % adFrequency == 0 {
-                var sdk = VungleSDK.sharedSDK()
-                sdk.playAd(self, error: nil)
+                //var sdk = VungleSDK.sharedSDK()
+                //sdk.playAd(self, error: nil)
             }
         }
         
@@ -70,7 +70,6 @@ class RateViewController: UIViewController {
             user.unpinInBackgroundWithName("To_Rate")
             user.pinInBackgroundWithName("Rated")
             
-            self.addUser()
             reverseRateAnimation()
             
             if checked {
@@ -100,6 +99,9 @@ class RateViewController: UIViewController {
             self.slider.value = 5
             self.checked = false
             userNum += 1
+            
+            self.addUser()
+            
             
             buttonEvent("Rate", "Next")
             
@@ -154,8 +156,8 @@ class RateViewController: UIViewController {
         self.backImageView.layer.cornerRadius = 10.0
         self.backImageView.clipsToBounds = true
         if usersToRate.count > 2 {
-            self.imageView.image = usersToRate[userNum].image
-            self.backImageView.image = usersToRate[userNum + 1].image
+            self.imageView.image = RBSquareImage(usersToRate[userNum].image)
+            self.backImageView.image = RBSquareImage(usersToRate[userNum + 1].image)
         }
 
         let length = (self.view.frame.height * (2 / 3)) - 80
@@ -193,7 +195,7 @@ class RateViewController: UIViewController {
             
         }
         else {
-            queueUsers()
+            queueMoreUsers()
         }
     }
     
@@ -222,124 +224,14 @@ class RateViewController: UIViewController {
             self.scoreView.backgroundColor = UIColor.whiteColor()
             
             }, completion: { (finished:Bool) -> () in
-                self.imageView.image = usersToRate[userNum].image
+                self.imageView.image = RBSquareImage(usersToRate[userNum].image)
                 self.imageView.alpha = 1
-                self.backImageView.image = usersToRate[userNum + 1].image
+                self.backImageView.image = RBSquareImage(usersToRate[userNum + 1].image)
         })
     }
     
     
-    /*var usersQueued = false {
-        didSet {
-            if usersQueued {
-                //self.avgScore.text = String(stringInterpolationSegment: usersToRate[userNum].score)
-                self.imageView.image = usersToRate[userNum].image
-            }
-        }
-    }
     
-    func queueUsersR() {
-        //PFObject.unpinAllObjectsInBackgroundWithName("To_Rate")
-        //check if enough users to rate are cached
-        let query = PFQuery(className: "Users")
-        query.fromPinWithName("To_Rate")
-        //query.skip = userNum
-        query.limit = 1
-        query.skip = 10 + userNum
-        query.findObjectsInBackgroundWithBlock({ (objects: [AnyObject]?, error: NSError?) -> Void in
-            if error == nil {
-                //if there are less than ten then get some more
-                if objects!.count < 1 {
-                    pront("something")
-                    //get a list of already rated users
-                    let query2 = PFQuery(className: "Users")
-                    query2.fromPinWithName("Rated")
-                    query2.findObjectsInBackgroundWithBlock({ (objects: [AnyObject]?, error: NSError?) -> Void in
-                        if error == nil {
-                            let rated: [PFObject] = objects as! Array
-                            let query3 = PFQuery(className: "Max_Index")
-                            query3.getObjectInBackgroundWithId("GdsteUx5am") {
-                                (maxIndex: PFObject?, error: NSError?) -> Void in
-                                if error != nil {
-                                    pront("error")
-                                } else if let maxIndex = maxIndex {
-                                    //list random indexes in the max index range
-                                    var indexes: [Int] = []
-                                    var max = maxIndex["i"] as! Int
-                                    var i = 0
-                                    while i < 1000 {
-                                        let n = randRange(0, max)
-                                        indexes.append(n)
-                                        i += 1
-                                    }
-                                    indexes.sort {
-                                        return $0 < $1
-                                    }
-                                    pront(indexes)
-                                    pront(indexes.count)
-                                    //fetch users with those indexes
-                                    let uQuery = PFQuery(className: "Users")
-                                    uQuery.whereKey("Index", containedIn: indexes)
-                                    uQuery.whereKey("Gender", equalTo: currentGenderPref())
-                                    uQuery.limit = 1000
-                                    uQuery.findObjectsInBackgroundWithBlock({ (objects: [AnyObject]?, error: NSError?) -> Void in
-                                        if error == nil {
-                                            let users: [PFObject] = objects as! Array
-                                            let unrated: [PFObject] = users.filter{ !contains(rated, $0) }
-                                            //cache all the users and label "To_Rate"
-                                            for user in unrated {
-                                                user.pinInBackgroundWithName("To_Rate")
-                                            }
-                                            //usersToRate = []
-                                            let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
-                                            dispatch_async(dispatch_get_global_queue(priority, 0)) {
-                                                // do some task
-                                                let pfUserToRate = unrated[0]
-                                                let userToRate = User(object: pfUserToRate)
-                                                dispatch_async(dispatch_get_main_queue()) {
-                                                    //self.avgScore.text = String(stringInterpolationSegment: usersToRate[userNum].score)
-                                                    //self.imageView.image = usersToRate[userNum].image
-                                                    //picsLoaded = true
-                                                }
-                                            }
-                                        }
-                                        else {
-                                            
-                                        }
-                                    })
-                                }
-                            }
-                        }
-                        else {
-                        }
-                    })
-                    //get the max index of all users
-                }
-                    //if there are ten then empty then add them to the global list
-                else {
-                    //usersToRate = []
-                    let userList: [PFObject] = objects as! Array
-                    let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
-                    dispatch_async(dispatch_get_global_queue(priority, 0)) {
-                        // do some task
-                        for user in userList {
-                            let userToRate = User(object: user)
-                            usersToRate.append(userToRate)
-                        }
-                        dispatch_async(dispatch_get_main_queue()) {
-                            //self.avgScore.text = String(stringInterpolationSegment: usersToRate[userNum].score)
-                            //self.imageView.image = usersToRate[userNum].image
-                            //picsLoaded = true
-                            pront("Count: \(usersToRate.count)")
-                        }
-                    }
-                    //self.usersQueued = true
-                }
-            }
-            else {
-            }
-        })
-    }*/
     
     
     

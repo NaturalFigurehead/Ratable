@@ -22,24 +22,30 @@ class ViewController: UIViewController {
     
     override func viewDidAppear(animated: Bool) {
         
+        //dummyUsers()
+        //PFUser.logOut()
+        PFObject.unpinAllObjectsInBackgroundWithName("Rated")
+        PFObject.unpinAllObjectsInBackgroundWithName("To_Rate")
+        
         //check if logged into facebook and parse
         if (FBSDKAccessToken.currentAccessToken() != nil) && PFUser.currentUser() != nil {
             //logged on, queue users and set current user
-            setCurrentUser()
             self.queueUsers()
             
             //get ad frequency
-            if adsRemoved() == "false" {
-                PFCloud.callFunctionInBackground("globalSettings", withParameters: ["":""]) {
-                    (response: AnyObject?, error: NSError?) -> Void in
-                    if error == nil {
-                        let result = response as! String
-                        let resultData = result.componentsSeparatedByString(" ")
-                        adFrequency = resultData[0].toInt()!
-                        saveRate = resultData[1].toInt()!
-                    }
+            PFCloud.callFunctionInBackground("globalSettings", withParameters: ["":""]) {
+                (response: AnyObject?, error: NSError?) -> Void in
+                if error == nil {
+                    let result = response as! String
+                    let resultData = result.componentsSeparatedByString(" ")
+                    adFrequency = resultData[0].toInt()!
+                    saveRate = resultData[1].toInt()!
+                    newUserTime = resultData[2].toInt()!
+                    newUserCount = resultData[3].toInt()!
                 }
             }
+            
+
             //self.presentViewController(vcWithName("LVC")!, animated: true, completion: nil)
         }
         else {
@@ -63,27 +69,30 @@ class ViewController: UIViewController {
         //PFObject.unpinAllObjectsInBackgroundWithName("To_Rate")
         pront("q")
         
-        //check if enough users to rate are cached
-        let query = PFQuery(className: "Score_Data")
-        query.fromPinWithName("To_Rate")
-        query.limit = 1000
-        query.findObjectsInBackgroundWithBlock({ (objects: [AnyObject]?, error: NSError?) -> Void in
+        //get a list of already rated users
+        let qRated = PFQuery(className: "Score_Data")
+        qRated.fromPinWithName("Rated")
+        qRated.limit = 1000
+        qRated.orderByDescending("index")
+        qRated.findObjectsInBackgroundWithBlock({ (objects: [AnyObject]?, error: NSError?) -> Void in
             
             if error == nil {
                 
-                //if there are less than ten then get some more
-                if objects!.count < 10 {
+                let rated: [PFObject] = objects as! Array
+                
+                let query = PFQuery(className: "Score_Data")
+                query.fromPinWithName("To_Rate")
+                query.limit = 1000
+                query.findObjectsInBackgroundWithBlock({ (objects: [AnyObject]?, error: NSError?) -> Void in
                     
-                    //get a list of already rated users
-                    let qRated = PFQuery(className: "Score_Data")
-                    qRated.fromPinWithName("Rated")
-                    qRated.limit = 1000
-                    qRated.findObjectsInBackgroundWithBlock({ (objects: [AnyObject]?, error: NSError?) -> Void in
+                    if error == nil {
                         
-                        if error == nil {
+                        pront("Pinned: \(objects?.count)")
+                        
+                        //if there are less than ten then get some more
+                        if objects!.count < 10 {
                             
                             //get max index
-                            let rated: [PFObject] = objects as! Array
                             let qIndex = PFQuery(className: "Max_Index")
                             qIndex.getObjectInBackgroundWithId("ur8NfMGzMl") {
                                 (maxIndex: PFObject?, error: NSError?) -> Void in
@@ -91,7 +100,7 @@ class ViewController: UIViewController {
                                 if error != nil {
                                     displayAlertView("Error", "There was an error loading data. Please try again later.", "Ok", self)
                                 }
-                                
+                                    
                                 else if let maxIndex = maxIndex {
                                     
                                     //list random indexes in the max index range
@@ -132,97 +141,209 @@ class ViewController: UIViewController {
                                             //cache all the users and label "To_Rate"
                                             PFObject.pinAllInBackground(unrated, withName: "To_Rate")
                                             
-                                            //queue users
-                                            let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
-                                            dispatch_async(dispatch_get_global_queue(priority, 0)) {
-                                                // do some task
-                                                
-                                                //create list of small users
-                                                for user in users {
-                                                    let userToRate = SmallUser(object: user)
-                                                    smallUsersToRate.append(userToRate)
-                                                }
-                                                smallUsersToRate = shuffle(smallUsersToRate)
-                                                
-                                                //queue of users
-                                                var i = 0
-                                                while i < 5 {
-                                                    let userToRate = User(user: smallUsersToRate[i])
-                                                    usersToRate.append(userToRate)
-                                                    i += 1
-                                                }
-                                                
-                                                dispatch_async(dispatch_get_main_queue()) {
-                                                    
-                                                    // move on
-                                                    picsLoaded = true
-                                                    if profilePicIsSet() {
-                                                        self.presentMaster()
-                                                    }
-                                                    else {
-                                                        getAlbumData()
-                                                    }
-                                                    
-                                                }
-                                            }
+                                            self.organizeUsers(unrated, rated: rated)
+                                            
                                         }
                                         else {
                                             displayAlertView("Error", "There was an error loading data. Please try again later.", "Ok", self)
                                         }
                                     })
                                 }
-                            }
+                            }                            
                         }
                             
                         else {
-                            displayAlertView("Error", "There was an error loading data. Please try again later.", "Ok", self)
-                        }
-                    })
-                }
-                
-                else {
-
-                    let userList: [PFObject] = objects as! Array
-                    pront(userList.count)
-                    let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
-                    dispatch_async(dispatch_get_global_queue(priority, 0)) {
-                        
-                        //make list of small users
-                        for user in userList {
-                            let userToRate = SmallUser(object: user)
-                            smallUsersToRate.append(userToRate)
-                        }
-                        smallUsersToRate = shuffle(smallUsersToRate)
-                        
-                        //queue up users
-                        var i = 0
-                        while i < 5 {
-                            pront(smallUsersToRate[i].id)
-                            let userToRate = User(user: smallUsersToRate[i])
-                            usersToRate.append(userToRate)
-                            i += 1
-                        }
-                        
-                        dispatch_async(dispatch_get_main_queue()) {
                             
-                            // move on
-                            picsLoaded = true
-                            if profilePicIsSet() {
-                                self.presentMaster()
-                            }
-                            else {
-                                getAlbumData()
-                            }
+                            let userList: [PFObject] = objects as! Array
+                            pront(userList.count)
+                            
+                            self.organizeUsers(userList, rated: rated)
                             
                         }
                     }
-                }
+                    else {
+                        displayAlertView("Error", "There was an error loading data. Please try again later.", "Ok", self)
+                    }
+                })
             }
+            
             else {
                 displayAlertView("Error", "There was an error loading data. Please try again later.", "Ok", self)
             }
+            
         })
         
+    }
+    
+    func organizeUsers(userArray: [PFObject], rated: [PFObject]) {
+        
+        //set cutoff time for new users
+        let date = NSDate(timeIntervalSinceNow: NSTimeInterval(-newUserTime))
+        
+        //query for new users and current user
+        let predicate = NSPredicate(format: "(createdAt > %@) OR user == %@", argumentArray: [date, PFUser.currentUser()!])
+        let query = PFQuery(className: "Score_Data", predicate: predicate)
+        query.findObjectsInBackgroundWithBlock({ (objects: [AnyObject]?, error: NSError?) -> Void in
+            
+            if error == nil {
+                
+                //set up containers to be used later
+                let users = objects as! [PFObject]
+                var newSmallUsers = [SmallUser]()
+                
+                //iterate through the found users
+                for var i = 0; i < users.count; ++i {
+                    let object = users[i]
+                    
+                    pront(i)
+                    
+                    //test if the users user is equal to current user
+                    let objectUser = object["user"] as! PFObject
+                    if objectUser == PFUser.currentUser() {
+                        
+                        
+                        //set up the settings for current user
+                        let user = object
+                        pictureURL = user["picture_url"] as! String
+                        if pictureURL != "" {
+                            defaults.setObject(pictureURL, forKey: "Profile_Picture")
+                        }
+                        scoreID = user.objectId!
+                        currentUser["Index"] = user["index"] as? Int
+                        currentUser["Total_Score"] = user["total_score"] as? Int
+                        currentUser["Votes"] = user["votes"] as? Int
+                        currentUser["Total_Score_Given"] = user["score_given"] as? Int
+                        currentUser["Votes_Given"] = user["votes_given"] as? Int
+                        cuScoreDif = (user["score_difference"] as? Double)!
+                        cuRank = (user["rank"] as? Double)!
+                        currentUser["n10"] = user["n10"] as? Int
+                        user.pinInBackgroundWithName("Current_User")
+                        
+                        
+                    }
+                        
+                    //if its not the current user add the new user to a list of small users
+                    else if (object["gender"] as! String == currentGenderPref() || currentGenderPref() == "all") && object["picture_url"] as! String != "" {
+                        
+                        //make sure these users have not been seen before
+                        var duplicate = false
+                        for user in rated {
+                            if user == object {
+                                duplicate = true
+                                break
+                            }
+                        }
+                        if !duplicate {
+                            newSmallUsers.append(SmallUser(object: object))
+                        }
+                        
+                    }
+                    
+                    if newSmallUsers.count >= newUserCount {
+                        break
+                    }
+                    
+                }
+                
+                let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
+                dispatch_async(dispatch_get_global_queue(priority, 0)) {
+                    
+                    //make list of small users
+                    for user in userArray {
+                        let userToRate = SmallUser(object: user)
+                        smallUsersToRate.append(userToRate)
+                    }
+                    smallUsersToRate = shuffle(smallUsersToRate)
+                    smallUsersToRate = newSmallUsers + smallUsersToRate
+                    for x in smallUsersToRate {
+                        pront("id: \(x.id), url: \(x.image)")
+                    }
+                    
+                    //queue up users
+                    var i = 0
+                    while i < 5 {
+                        pront(smallUsersToRate[i].id)
+                        let userToRate = User(user: smallUsersToRate[i])
+                        usersToRate.append(userToRate)
+                        i += 1
+                    }
+                    
+                    dispatch_async(dispatch_get_main_queue()) {
+                        
+                        // move on
+                        picsLoaded = true
+                        if profilePicIsSet() {
+                            self.presentMaster()
+                        }
+                        else {
+                            getAlbumData()
+                        }
+                        
+                    }
+                }
+                
+            }
+            else {
+                var localQuery = PFQuery(className:"Score_Data")
+                localQuery.fromPinWithName("Current_User")
+                localQuery.findObjectsInBackgroundWithBlock({ (objects: [AnyObject]?, error: NSError?) -> Void in
+                    if error == nil {
+                        let array = objects as! [PFObject]
+                        let user = array[0]
+                        pictureURL = user["picture_url"] as! String
+                        if pictureURL != "" {
+                            defaults.setObject(pictureURL, forKey: "Profile_Picture")
+                        }
+                        scoreID = user.objectId!
+                        currentUser["Index"] = user["index"] as? Int
+                        currentUser["Total_Score"] = user["total_score"] as? Int
+                        currentUser["Votes"] = user["votes"] as? Int
+                        currentUser["Total_Score_Given"] = user["score_given"] as? Int
+                        currentUser["Votes_Given"] = user["votes_given"] as? Int
+                        cuScoreDif = (user["score_difference"] as? Double)!
+                        cuRank = (user["rank"] as? Double)!
+                        currentUser["n10"] = user["n10"] as? Int
+                        
+                        let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
+                        dispatch_async(dispatch_get_global_queue(priority, 0)) {
+                            
+                            //make list of small users
+                            for user in userArray {
+                                let userToRate = SmallUser(object: user)
+                                smallUsersToRate.append(userToRate)
+                            }
+                            smallUsersToRate = shuffle(smallUsersToRate)
+                            
+                            //queue up users
+                            var i = 0
+                            while i < 5 {
+                                pront(smallUsersToRate[i].id)
+                                let userToRate = User(user: smallUsersToRate[i])
+                                usersToRate.append(userToRate)
+                                i += 1
+                            }
+                            
+                            dispatch_async(dispatch_get_main_queue()) {
+                                
+                                // move on
+                                picsLoaded = true
+                                if profilePicIsSet() {
+                                    self.presentMaster()
+                                }
+                                else {
+                                    getAlbumData()
+                                }
+                                
+                            }
+                        }
+                        
+                    }
+                    else {
+                        
+                    }
+                })
+            }
+        })
     }
 }
     

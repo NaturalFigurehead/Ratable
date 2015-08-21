@@ -16,6 +16,10 @@ var defaults = NSUserDefaults.standardUserDefaults()
 
 var adFrequency = 20
 var saveRate = 10
+var newUserTime = 3600
+var newUserCount = 5
+
+var maximumIndex = 0
 
 
 var currentVC = 0
@@ -120,6 +124,12 @@ func adsRemoved() -> String {
     }
     return "false"
 }
+func ratedNewUsers() -> [String] {
+    if defaults.objectForKey("Rated_New_Users") != nil {
+        return defaults.objectForKey("Rated_New_Users") as! [String]
+    }
+    return []
+}
 
 
 var currentUserToSave = PFObject(className: "Score_Data")
@@ -165,146 +175,178 @@ var picsLoaded = false
 
 func queueUsers() {
     
-    PFObject.unpinAllObjectsInBackgroundWithName("To_Rate")
-    pront("q")
+    //PFObject.unpinAllObjectsInBackgroundWithName("To_Rate")
+    pront("qr")
     
-    //check if enough users to rate are cached
-    let query = PFQuery(className: "Score_Data")
-    query.fromPinWithName("To_Rate")
-    query.limit = 1000
-    query.findObjectsInBackgroundWithBlock({ (objects: [AnyObject]?, error: NSError?) -> Void in
+    //get a list of already rated users
+    let qRated = PFQuery(className: "Score_Data")
+    qRated.fromPinWithName("Rated")
+    qRated.limit = 1000
+    qRated.findObjectsInBackgroundWithBlock({ (objects: [AnyObject]?, error: NSError?) -> Void in
         
         if error == nil {
             
-            //if there are less than ten then get some more
-            if objects!.count < 10 {
+            //get max index
+            let rated: [PFObject] = objects as! Array
+            let qIndex = PFQuery(className: "Max_Index")
+            qIndex.getObjectInBackgroundWithId("ur8NfMGzMl") {
+                (maxIndex: PFObject?, error: NSError?) -> Void in
                 
-                //get a list of already rated users
-                let qRated = PFQuery(className: "Score_Data")
-                qRated.fromPinWithName("Rated")
-                qRated.limit = 1000
-                qRated.findObjectsInBackgroundWithBlock({ (objects: [AnyObject]?, error: NSError?) -> Void in
+                if error != nil {
+                    pront("error")
+                }
                     
-                    if error == nil {
-                        
-                        //get max index
-                        let rated: [PFObject] = objects as! Array
-                        let qIndex = PFQuery(className: "Max_Index")
-                        qIndex.getObjectInBackgroundWithId("ur8NfMGzMl") {
-                            (maxIndex: PFObject?, error: NSError?) -> Void in
-                            
-                            if error != nil {
-                                pront("error")
-                            }
-                                
-                            else if let maxIndex = maxIndex {
-                                
-                                //list random indexes in the max index range
-                                var indexes: [Int] = []
-                                var max = maxIndex["i"] as! Int
-                                var i = 0
-                                while i < 1000 {
-                                    let n = randRange(1, max)
-                                    indexes.append(n)
-                                    i += 1
-                                }
-                                indexes.sort {
-                                    return $0 < $1
-                                }
-                                pront(indexes.count)
-                                
-                                //fetch users with those indexes
-                                let qUser = PFQuery(className: "Score_Data")
-                                qUser.whereKey("index", containedIn: indexes)
-                                if currentGenderPref() != "all" {
-                                    qUser.whereKey("gender", equalTo: currentGenderPref())
-                                }
-                                qUser.whereKey("picture_url", notEqualTo: "")
-                                qUser.limit = 1000
-                                qUser.findObjectsInBackgroundWithBlock({ (objects: [AnyObject]?, error: NSError?) -> Void in
-                                    
-                                    if error == nil {
-                                        
-                                        //filter users
-                                        let users: [PFObject] = objects as! Array
-                                        let unrated: [PFObject] = users.filter{ !contains(rated, $0) }
-                                        
-                                        //cache all the users and label "To_Rate"
-                                        PFObject.pinAllInBackground(unrated, withName: "To_Rate")
-                                        
-                                        //queue users
-                                        let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
-                                        dispatch_async(dispatch_get_global_queue(priority, 0)) {
-                                            // do some task
-                                            
-                                            //create list of small users
-                                            for user in users {
-                                                let userToRate = SmallUser(object: user)
-                                                smallUsersToRate.append(userToRate)
-                                            }
-                                            //smallUsersToRate = shuffle(smallUsersToRate)
-                                            
-                                            //queue of users
-                                            var i = 0
-                                            while i < 5 {
-                                                let userToRate = User(user: smallUsersToRate[i])
-                                                usersToRate.append(userToRate)
-                                                i += 1
-                                            }
-                                            
-                                            dispatch_async(dispatch_get_main_queue()) {
-                                                
-                                                picsLoaded = true
-                                                
-                                            }
-                                        }
-                                    }
-                                    else {
-                                        
-                                    }
-                                })
-                            }
-                        }
-                    }
-                    else {
-                    }
-                })
-            }
-                
-            else {
-                
-                let userList: [PFObject] = objects as! Array
-                let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
-                dispatch_async(dispatch_get_global_queue(priority, 0)) {
+                else if let maxIndex = maxIndex {
                     
-                    //make list of small users
-                    for user in userList {
-                        let userToRate = SmallUser(object: user)
-                        smallUsersToRate.append(userToRate)
-                    }
-                    smallUsersToRate = shuffle(smallUsersToRate)
-                    
-                    //queue up users
+                    //list random indexes in the max index range
+                    var indexes: [Int] = []
+                    var max = maxIndex["i"] as! Int
                     var i = 0
-                    while i < 5 {
-                        let userToRate = User(user: smallUsersToRate[i])
-                        usersToRate.append(userToRate)
+                    while i < 1000 {
+                        let n = randRange(1, max)
+                        indexes.append(n)
                         i += 1
                     }
-                    
-                    dispatch_async(dispatch_get_main_queue()) {
-                        
-                        picsLoaded = true
-                        
+                    indexes.sort {
+                        return $0 < $1
                     }
+                    
+                    //fetch users with those indexes
+                    let qUser = PFQuery(className: "Score_Data")
+                    qUser.whereKey("index", containedIn: indexes)
+                    if currentGenderPref() != "all" {
+                        qUser.whereKey("gender", equalTo: currentGenderPref())
+                    }
+                    qUser.whereKey("picture_url", notEqualTo: "")
+                    qUser.limit = 1000
+                    qUser.findObjectsInBackgroundWithBlock({ (objects: [AnyObject]?, error: NSError?) -> Void in
+                        
+                        if error == nil {
+                            
+                            //filter users
+                            let users: [PFObject] = objects as! Array
+                            let unrated: [PFObject] = users.filter{ !contains(rated, $0) }
+                            pront("Users: \(users)")
+                            pront("Unrated: \(unrated)")
+                            pront("Rated: \(rated)")
+                            
+                            //cache all the users and label "To_Rate"
+                            PFObject.pinAllInBackground(unrated, withName: "To_Rate")
+                            
+                            //queue users
+                            let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
+                            dispatch_async(dispatch_get_global_queue(priority, 0)) {
+                                // do some task
+                                
+                                var smallUserList = [SmallUser]()
+                                //create list of small users
+                                for user in users {
+                                    let userToRate = SmallUser(object: user)
+                                    smallUserList.append(userToRate)
+                                }
+                                smallUserList = shuffle(smallUserList.filter{ !contains(smallUsersToRate, $0) })
+                                smallUsersToRate = smallUsersToRate + smallUserList
+                                
+                                //queue of users
+                                var i = 0
+                                while i < 5 {
+                                    let userToRate = User(user: smallUsersToRate[i])
+                                    usersToRate.append(userToRate)
+                                    i += 1
+                                }
+                                
+                                dispatch_async(dispatch_get_main_queue()) {
+                                    
+                                    picsLoaded = true
+                                    
+                                }
+                            }
+                        }
+                        else {
+                            
+                        }
+                    })
                 }
             }
         }
         else {
-            
         }
     })
-    
+}
+
+func queueMoreUsers() {
+    let qIndex = PFQuery(className: "Max_Index")
+    qIndex.getObjectInBackgroundWithId("ur8NfMGzMl") {
+        (maxIndex: PFObject?, error: NSError?) -> Void in
+        
+        if error != nil {
+            pront("error")
+        }
+            
+        else if let maxIndex = maxIndex {
+            
+            //list random indexes in the max index range
+            var indexes: [Int] = []
+            var max = maxIndex["i"] as! Int
+            var i = 0
+            while i < 1000 {
+                let n = randRange(1, max)
+                indexes.append(n)
+                i += 1
+            }
+            
+            //fetch users with those indexes
+            let qUser = PFQuery(className: "Score_Data")
+            qUser.whereKey("index", containedIn: indexes)
+            if currentGenderPref() != "all" {
+                qUser.whereKey("gender", equalTo: currentGenderPref())
+            }
+            qUser.whereKey("picture_url", notEqualTo: "")
+            qUser.limit = 1000
+            qUser.findObjectsInBackgroundWithBlock({ (objects: [AnyObject]?, error: NSError?) -> Void in
+                
+                if error == nil {
+                    
+                    let users: [PFObject] = objects as! Array
+
+                    //queue users
+                    let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
+                    dispatch_async(dispatch_get_global_queue(priority, 0)) {
+                        // do some task
+                        
+                        var smallUserList = [SmallUser]()
+                        //create list of small users
+                        for user in users {
+                            let userToRate = SmallUser(object: user)
+                            smallUserList.append(userToRate)
+                        }
+                        smallUserList = shuffle(smallUserList.filter{ !contains(smallUsersToRate, $0) })
+                        smallUsersToRate = smallUsersToRate + smallUserList
+                        for x in smallUsersToRate {
+                            pront("id: \(x.id), url: \(x.image)")
+                        }
+                        
+                        //queue of users
+                        var i = 0
+                        while i < 5 {
+                            let userToRate = User(user: smallUsersToRate[i])
+                            usersToRate.append(userToRate)
+                            i += 1
+                        }
+                        
+                        dispatch_async(dispatch_get_main_queue()) {
+                            
+                            picsLoaded = true
+                            
+                        }
+                    }
+                }
+                else {
+                    
+                }
+            })
+        }
+    }
 }
 
 //requests------------------------------------------------------------------------------------------------------requests
@@ -331,19 +373,158 @@ func sessionCount() -> Int {
 
 
 func testTimeFetch() {
+    pront(1)
     let query = PFQuery(className: "Score_Data")
-    query.whereKey("updatedAt", equalTo: "Aug 18, 2015, 16:36")
+    query.whereKey("user", equalTo: PFUser.currentUser()!)
     query.findObjectsInBackgroundWithBlock({ (objects: [AnyObject]?, error: NSError?) -> Void in
-        
+        pront(2)
         if error == nil {
             pront(objects!)
+            var x = objects![0] as! PFObject
+            pront("5\(x)")
+            let y = x.createdAt
+            pront("6\(y)")
         }
         else {
-            
+            pront(4)
         }
         
     })
 }
+
+func newTest() {
+    
+    //set cutoff time for new users
+    let date = NSDate(timeIntervalSinceNow: -10000)
+    
+    //query for new users and current user
+    let predicate = NSPredicate(format: "(createdAt > %@) OR user == %@", argumentArray: [date, PFUser.currentUser()!])
+    let query = PFQuery(className: "Score_Data", predicate: predicate)
+    query.findObjectsInBackgroundWithBlock({ (objects: [AnyObject]?, error: NSError?) -> Void in
+        
+        if error == nil {
+            
+            //set up containers to be used later
+            let users = objects as! [PFObject]
+            var newSmallUsers = [SmallUser]()
+            
+            //iterate through the found users
+            for var i = 0; i < users.count; ++i {
+                let object = users[i]
+                
+                //test if the users user is equal to current user
+                let objectUser = object["user"] as! PFObject
+                if objectUser == PFUser.currentUser() {
+                    
+                    
+                    //set up the settings for current user
+                    let user = object
+                    pictureURL = user["picture_url"] as! String
+                    if pictureURL != "" {
+                        defaults.setObject(pictureURL, forKey: "Profile_Picture")
+                    }
+                    scoreID = user.objectId!
+                    currentUser["Index"] = user["index"] as? Int
+                    currentUser["Total_Score"] = user["total_score"] as? Int
+                    currentUser["Votes"] = user["votes"] as? Int
+                    currentUser["Total_Score_Given"] = user["score_given"] as? Int
+                    currentUser["Votes_Given"] = user["votes_given"] as? Int
+                    cuScoreDif = (user["score_difference"] as? Double)!
+                    cuRank = (user["rank"] as? Double)!
+                    currentUser["n10"] = user["n10"] as? Int
+                    user.pinInBackgroundWithName("Current_User")
+                    
+                    
+                }
+                    
+                //if its not the current user add the new user to a list of small users
+                else if object["gender"] as! String == currentGenderPref() || currentGenderPref() == "all" {
+                    newSmallUsers.append(SmallUser(object: object))
+                }
+                
+            }
+            
+        }
+        else {
+            var localQuery = PFQuery(className:"Score_Data")
+            localQuery.fromPinWithName("Current_User")
+            localQuery.findObjectsInBackgroundWithBlock({ (objects: [AnyObject]?, error: NSError?) -> Void in
+                if error == nil {
+                    let array = objects as! [PFObject]
+                    let user = array[0]
+                    pictureURL = user["picture_url"] as! String
+                    if pictureURL != "" {
+                        defaults.setObject(pictureURL, forKey: "Profile_Picture")
+                    }
+                    scoreID = user.objectId!
+                    currentUser["Index"] = user["index"] as? Int
+                    currentUser["Total_Score"] = user["total_score"] as? Int
+                    currentUser["Votes"] = user["votes"] as? Int
+                    currentUser["Total_Score_Given"] = user["score_given"] as? Int
+                    currentUser["Votes_Given"] = user["votes_given"] as? Int
+                    cuScoreDif = (user["score_difference"] as? Double)!
+                    cuRank = (user["rank"] as? Double)!
+                    currentUser["n10"] = user["n10"] as? Int
+                }
+                else {
+                    
+                }
+            })
+        }
+    })
+}
+
+/*func setCurrentUser() {
+    pront("cu")
+    var query = PFQuery(className:"Score_Data")
+    query.whereKey("user", equalTo: PFUser.currentUser()!)
+    query.findObjectsInBackgroundWithBlock({ (objects: [AnyObject]?, error: NSError?) -> Void in
+        if error == nil {
+            let array = objects as! [PFObject]
+            let user = array[0]
+            pictureURL = user["picture_url"] as! String
+            if pictureURL != "" {
+                defaults.setObject(pictureURL, forKey: "Profile_Picture")
+            }
+            scoreID = user.objectId!
+            currentUser["Index"] = user["index"] as? Int
+            currentUser["Total_Score"] = user["total_score"] as? Int
+            currentUser["Votes"] = user["votes"] as? Int
+            currentUser["Total_Score_Given"] = user["score_given"] as? Int
+            currentUser["Votes_Given"] = user["votes_given"] as? Int
+            cuScoreDif = (user["score_difference"] as? Double)!
+            cuRank = (user["rank"] as? Double)!
+            currentUser["n10"] = user["n10"] as? Int
+            user.pinInBackgroundWithName("Current_User")
+        }
+        else {
+            var localQuery = PFQuery(className:"Score_Data")
+            localQuery.fromPinWithName("Current_User")
+            localQuery.findObjectsInBackgroundWithBlock({ (objects: [AnyObject]?, error: NSError?) -> Void in
+                if error == nil {
+                    let array = objects as! [PFObject]
+                    let user = array[0]
+                    pictureURL = user["picture_url"] as! String
+                    if pictureURL != "" {
+                        defaults.setObject(pictureURL, forKey: "Profile_Picture")
+                    }
+                    scoreID = user.objectId!
+                    currentUser["Index"] = user["index"] as? Int
+                    currentUser["Total_Score"] = user["total_score"] as? Int
+                    currentUser["Votes"] = user["votes"] as? Int
+                    currentUser["Total_Score_Given"] = user["score_given"] as? Int
+                    currentUser["Votes_Given"] = user["votes_given"] as? Int
+                    cuScoreDif = (user["score_difference"] as? Double)!
+                    cuRank = (user["rank"] as? Double)!
+                    currentUser["n10"] = user["n10"] as? Int
+                }
+                else {
+                    
+                }
+            })
+        }
+    })
+}*/
 
 
 
