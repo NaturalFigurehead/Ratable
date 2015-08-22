@@ -326,14 +326,6 @@ func queueMoreUsers() {
                             pront("id: \(x.id), url: \(x.image)")
                         }
                         
-                        //queue of users
-                        var i = 0
-                        while i < 5 {
-                            let userToRate = User(user: smallUsersToRate[i])
-                            usersToRate.append(userToRate)
-                            i += 1
-                        }
-                        
                         dispatch_async(dispatch_get_main_queue()) {
                             
                             picsLoaded = true

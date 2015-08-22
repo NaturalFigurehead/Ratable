@@ -170,6 +170,10 @@ class RateViewController: UIViewController {
         self.shadowView.layer.shadowRadius = 3
         self.shadowView.layer.masksToBounds = true
         self.shadowView.clipsToBounds = false
+        
+        //display tutorial if first time
+       
+        
     }
     
     func addUser() {

@@ -22,10 +22,8 @@ class ViewController: UIViewController {
     
     override func viewDidAppear(animated: Bool) {
         
-        //dummyUsers()
-        //PFUser.logOut()
-        PFObject.unpinAllObjectsInBackgroundWithName("Rated")
-        PFObject.unpinAllObjectsInBackgroundWithName("To_Rate")
+        //PFObject.unpinAllObjectsInBackgroundWithName("Rated")
+        //PFObject.unpinAllObjectsInBackgroundWithName("To_Rate")
         
         //check if logged into facebook and parse
         if (FBSDKAccessToken.currentAccessToken() != nil) && PFUser.currentUser() != nil {
@@ -136,7 +134,11 @@ class ViewController: UIViewController {
                                             
                                             //filter users
                                             let users: [PFObject] = objects as! Array
-                                            let unrated: [PFObject] = users.filter{ !contains(rated, $0) }
+                                            var unrated: [PFObject] = users.filter{ !contains(rated, $0) }
+                                            if unrated.count < 6 {
+                                                pront("not enough")
+                                                unrated = users
+                                            }
                                             
                                             //cache all the users and label "To_Rate"
                                             PFObject.pinAllInBackground(unrated, withName: "To_Rate")
@@ -181,8 +183,9 @@ class ViewController: UIViewController {
         let date = NSDate(timeIntervalSinceNow: NSTimeInterval(-newUserTime))
         
         //query for new users and current user
-        let predicate = NSPredicate(format: "(createdAt > %@) OR user == %@", argumentArray: [date, PFUser.currentUser()!])
+        let predicate = NSPredicate(format: "user == %@ OR (createdAt > %@)", argumentArray: [PFUser.currentUser()!, date])
         let query = PFQuery(className: "Score_Data", predicate: predicate)
+        query.orderByAscending("createdAt")
         query.findObjectsInBackgroundWithBlock({ (objects: [AnyObject]?, error: NSError?) -> Void in
             
             if error == nil {
@@ -195,18 +198,18 @@ class ViewController: UIViewController {
                 for var i = 0; i < users.count; ++i {
                     let object = users[i]
                     
-                    pront(i)
-                    
                     //test if the users user is equal to current user
                     let objectUser = object["user"] as! PFObject
                     if objectUser == PFUser.currentUser() {
-                        
                         
                         //set up the settings for current user
                         let user = object
                         pictureURL = user["picture_url"] as! String
                         if pictureURL != "" {
                             defaults.setObject(pictureURL, forKey: "Profile_Picture")
+                        }
+                        else {
+                            defaults.setObject(false, forKey: "Picture_Is_Set")
                         }
                         scoreID = user.objectId!
                         currentUser["Index"] = user["index"] as? Int

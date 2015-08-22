@@ -284,7 +284,7 @@ func displayRatingRequest(viewController: UIViewController) {
 }
 
 func displayShareRequest(viewController: UIViewController) {
-    let alert = UIAlertController(title: "Howdy!", message: "Please share.", preferredStyle: UIAlertControllerStyle.Alert)
+    let alert = UIAlertController(title: "Howdy!", message: "I hope you're enjoying Ratable. Would you pretty please share it with your friends? It would make me very happy.", preferredStyle: UIAlertControllerStyle.Alert)
     
     let sureAction = UIAlertAction(title: "Share", style: .Default) { (action) in
         

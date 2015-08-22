@@ -48,6 +48,14 @@ class MasterPageViewController: UIViewController, UIScrollViewDelegate {
             self.scrollView.setContentOffset(CGPointMake(self.view.frame.width, -64), animated: false)
         }
         
+        //increment session count
+        if !(sessionCount() > 0) {
+            displayAlertView("Hello", "It's time to rate someone. Give them a score using the orange slider below. When you have it picked out press the green check mark. When you're done press the blue arrow to move on to the next person.", "Ok", self)
+            defaults.setInteger(1, forKey: "Sessions")
+        }
+        else {
+            defaults.setInteger(sessionCount() + 1, forKey: "Sessions")
+        }
         
         let profile = vcWithName("Profile")!
         profile.view.frame.origin.y -= 64
@@ -66,21 +74,13 @@ class MasterPageViewController: UIViewController, UIScrollViewDelegate {
         
         self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width * 2, self.view.frame.size.height - 64)
         
-        //increment session count
-        if !(sessionCount() > 0) {
-            defaults.setInteger(1, forKey: "Sessions")
-        }
-        else {
-            defaults.setInteger(sessionCount() + 1, forKey: "Sessions")
-        }
-        
         //request rating or share
-        if sessionCount() % 2 == 0 {
+        if sessionCount() % 2 == 0 && sessionCount() > 3 {
             if requestedRating() == "false" {
                 displayRatingRequest(self)
             }
         }
-        else {
+        else if sessionCount() > 3 {
             if requestedShare() == "false" {
                 displayShareRequest(self)
             }
@@ -92,22 +92,6 @@ class MasterPageViewController: UIViewController, UIScrollViewDelegate {
         if currentVC == 1 {
             self.performSegueWithIdentifier("MPVC to ASVC", sender: self)
         }
-    }
-    
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-        /*if !viewWasSelected {
-            if self.scrollView.contentOffset.x < (self.view.frame.width / 2){
-                self.segmentedControl.selectedSegmentIndex = 0
-            }
-            else {
-                self.segmentedControl.selectedSegmentIndex = 1
-            }
-        }*/
-    }
-    
-    func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
-        //pront(viewWasSelected)
-        //viewWasSelected = false
     }
     
     func popViewController(note: NSNotification) {

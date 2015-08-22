@@ -23,6 +23,7 @@
 		5E2A6E3C1B6BF1A3003F9614 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2A6E3B1B6BF1A3003F9614 /* InfoViewController.swift */; };
 		5E2A6E3E1B6C03DF003F9614 /* ProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2A6E3D1B6C03DF003F9614 /* ProfileCell.swift */; };
 		5E2E29C61B3A4A8F009AF8B0 /* PictureSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2E29C51B3A4A8F009AF8B0 /* PictureSelectionViewController.swift */; };
+		5E55557D1B88C96300310BAE /* MasterPageNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E55557C1B88C96300310BAE /* MasterPageNavigationController.swift */; };
 		5E7FF6C11B580C3400C15937 /* Defunct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7FF6C01B580C3400C15937 /* Defunct.swift */; };
 		5E7FF6C41B58218200C15937 /* ParseFacebookUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E7FF6C21B58218200C15937 /* ParseFacebookUtils.framework */; };
 		5E7FF6C51B58218200C15937 /* ParseFacebookUtilsV4.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E7FF6C31B58218200C15937 /* ParseFacebookUtilsV4.framework */; };
@@ -107,6 +108,7 @@
 		5E2A6E3B1B6BF1A3003F9614 /* InfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
 		5E2A6E3D1B6C03DF003F9614 /* ProfileCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileCell.swift; sourceTree = "<group>"; };
 		5E2E29C51B3A4A8F009AF8B0 /* PictureSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PictureSelectionViewController.swift; sourceTree = "<group>"; };
+		5E55557C1B88C96300310BAE /* MasterPageNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterPageNavigationController.swift; sourceTree = "<group>"; };
 		5E7FF6C01B580C3400C15937 /* Defunct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Defunct.swift; sourceTree = "<group>"; };
 		5E7FF6C21B58218200C15937 /* ParseFacebookUtils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseFacebookUtils.framework; sourceTree = "<group>"; };
 		5E7FF6C31B58218200C15937 /* ParseFacebookUtilsV4.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseFacebookUtilsV4.framework; sourceTree = "<group>"; };
@@ -297,6 +299,7 @@
 				5ED9C7691B3094650080E872 /* ViewController.swift */,
 				5E2A6E381B695D9A003F9614 /* LoginViewController.swift */,
 				5E2A6E361B6864E0003F9614 /* MasterPageViewController.swift */,
+				5E55557C1B88C96300310BAE /* MasterPageNavigationController.swift */,
 				5E0D94701B4ACC3B00FBFDCC /* Album Selection */,
 				5E0D94711B4ACC5A00FBFDCC /* Picture Selection */,
 				5E0D94721B4ACC6800FBFDCC /* Picture Confirm */,
@@ -514,6 +517,7 @@
 				5EC36B261B42ED9400DAD9A9 /* PictureCell.swift in Sources */,
 				5E0D946E1B4826B500FBFDCC /* ProfileViewController.swift in Sources */,
 				5E2A6E391B695D9A003F9614 /* LoginViewController.swift in Sources */,
+				5E55557D1B88C96300310BAE /* MasterPageNavigationController.swift in Sources */,
 				5E2A6E171B6141EF003F9614 /* User.swift in Sources */,
 				5ED9C7681B3094650080E872 /* AppDelegate.swift in Sources */,
 				5E2A6E3C1B6BF1A3003F9614 /* InfoViewController.swift in Sources */,

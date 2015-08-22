@@ -318,7 +318,10 @@ class InfoViewController: UITableViewController, UIPickerViewDataSource, UIPicke
                                 
                                 //filter users
                                 let users: [PFObject] = objects as! Array
-                                let unrated: [PFObject] = users.filter{ !contains(rated, $0) }
+                                var unrated: [PFObject] = users.filter{ !contains(rated, $0) }
+                                if unrated.count < 6 {
+                                    unrated = users
+                                }
                                 
                                 //cache all the users and label "To_Rate"
                                 PFObject.pinAllInBackground(unrated, withName: "To_Rate")

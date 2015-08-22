@@ -235,4 +235,32 @@ func dummyUsers() {
     
 }
 
+func men() {
+    let urls = "https://farm8.staticflickr.com/7332/11664746305_1e2d7de788_b.jpg*https://farm9.staticflickr.com/8753/16989843460_a770cb6a59_z.jpg*https://farm9.staticflickr.com/8761/17489202743_87cbf9d31a_b.jpg*https://farm4.staticflickr.com/3077/2742221547_488d0eb3e1_b.jpg*https://farm3.staticflickr.com/2093/5778827420_2372a2a854_b.jpg*https://farm8.staticflickr.com/7035/6678108171_66d6d16314_b.jpg*https://farm9.staticflickr.com/8074/8330343027_fd33e00b56_b.jpg*https://farm9.staticflickr.com/8846/17923060719_ab878e392e_b.jpg*https://farm4.staticflickr.com/3908/15160708065_445caff323_o.jpg*https://farm8.staticflickr.com/7740/17136071810_cf214d97ea_o.jpg*https://farm9.staticflickr.com/8153/7524238556_47a178dde2_b.jpg*https://farm1.staticflickr.com/389/20097497379_51f3f7d4f9_b.jpg*https://farm8.staticflickr.com/7296/15858508643_9e35e749ed_b.jpg*https://farm9.staticflickr.com/8757/16459725203_64b023c208_b.jpg*https://farm1.staticflickr.com/335/19534287094_07591ccbb1_b.jpg*https://farm9.staticflickr.com/8010/7506717684_b45aa70157_b.jpg*https://farm8.staticflickr.com/7103/7181628059_abfae04c9d_b.jpg*https://farm9.staticflickr.com/8149/7506607248_d1ca973a65_b.jpg*https://farm4.staticflickr.com/3696/19856096088_3ede012a0c_b.jpg*https://farm9.staticflickr.com/8397/8687701580_d74e9d21c6_b.jpg*https://farm4.staticflickr.com/3249/5857268807_a9f3135f63_b.jpg*https://farm6.staticflickr.com/5534/18707786149_be7928e237_b.jpg*https://farm1.staticflickr.com/775/20502457608_1b0cf8351d_b.jpg*https://farm3.staticflickr.com/2631/3886604490_f3ca7c3622_b.jpg*https://farm1.staticflickr.com/1/223735_ccbb3fee03_o.jpg*https://farm9.staticflickr.com/8776/17964579475_c50f9226bb_b.jpg*https://farm4.staticflickr.com/3914/14351445404_ed8f6aa605_b.jpg*https://farm9.staticflickr.com/8807/18110457201_0a5ec8b6e0_b.jpg*https://farm6.staticflickr.com/5348/17853813879_d84028ae35_b.jpg*https://farm3.staticflickr.com/2944/15421483132_89fd30cd3f_b.jpg*https://farm1.staticflickr.com/442/19406859302_94bb2ee747_b.jpg*https://farm6.staticflickr.com/5522/18841580855_1ed962a18b_b.jpg*https://farm9.staticflickr.com/8777/16875871870_5b055981e2_b.jpg*https://farm9.staticflickr.com/8685/16809293139_b8c1c4ed8b_b.jpg*https://farm4.staticflickr.com/3143/2808993295_9de26b3172_b.jpg*https://farm6.staticflickr.com/5794/20476824549_08d70cffeb_b.jpg*https://farm1.staticflickr.com/334/20230114616_7b7fb12d7a_b.jpg*https://farm1.staticflickr.com/472/20015539909_8951401eca_b.jpg*https://farm1.staticflickr.com/267/19303843624_842f6d5346_b.jpg*https://farm1.staticflickr.com/429/19677729488_5170837a17_b.jpg*https://farm1.staticflickr.com/364/19042712351_6812d831d6_b.jpg*https://farm9.staticflickr.com/8820/17807173588_4eeeabc422_b.jpg*https://farm9.staticflickr.com/8712/17083682189_b325131ca2_b.jpg*https://farm8.staticflickr.com/7617/17082346130_e2111a2e87_b.jpg*https://farm8.staticflickr.com/7624/17204017176_c2e463e781_b.jpg*https://farm4.staticflickr.com/3315/3567533154_cf03469526_b.jpg*https://farm4.staticflickr.com/3147/5816661914_3b06463bed_b.jpg*https://farm1.staticflickr.com/318/18667543514_d0f297ddca_b.jpg*https://farm8.staticflickr.com/7698/17245343782_7cbd28e311_b.jpg*https://farm3.staticflickr.com/2902/14059733947_3f2a9b34dd_b.jpg*"
+    let urlList = urls.componentsSeparatedByString("*")
+    for var i = 0; i < urlList.count; i++ {
+        let dummy = PFObject(className: "Score_Data")
+        for var n = 0; n < 11; n++ {
+            dummy["n\(n)"] = 0
+        }
+        var dummyACL = PFACL()
+        dummyACL.setPublicReadAccess(true)
+        dummyACL.setPublicWriteAccess(false)
+        dummy.ACL = dummyACL
+        dummy["first_name"] = "Dummy"
+        dummy["gender"] = "male"
+        dummy["index"] = i + 51
+        dummy["picture_url"] = urlList[i]
+        dummy["rank"] = 1
+        dummy["score"] = 0
+        dummy["score_difference"] = 0
+        dummy["score_given"] = 0
+        dummy["total_score"] = 0
+        dummy["user"] = PFUser(withoutDataWithClassName: "_User", objectId: "QB9PY3SF9A")
+        dummy["votes"] = 0
+        dummy["votes_given"] = 0
+        dummy.saveInBackground()
+    }
+}
+
 
