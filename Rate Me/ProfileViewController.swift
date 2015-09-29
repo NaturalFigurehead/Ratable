@@ -15,15 +15,15 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     @IBOutlet weak var personalScore: UILabel!
     @IBOutlet weak var dataTable: UITableView!
     @IBAction func fbAction(sender: UIButton) {
-        buttonEvent("Profile", "Facebook Share")
+        buttonEvent("Profile", button: "Facebook Share")
         showFaceSheet()
     }
     @IBAction func twAction(sender: AnyObject) {
-        buttonEvent("Profile", "Twitter Share")
+        buttonEvent("Profile", button: "Twitter Share")
         showTweetSheet()
     }
     @IBAction func changePicture(sender: UIButton) {
-        buttonEvent("Profile", "Change Picture")
+        buttonEvent("Profile", button: "Change Picture")
         getAlbumData()
     }
     
@@ -60,16 +60,16 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
             as! ProfileCell
         switch indexPath.row {
         case 0:
-            cell.titleLabel?.text = "You were voted on"
+            cell.titleLabel?.text = "Your selfie was voted on"
             let votes: Int = currentUser["Votes"]!
             cell.dataLabel?.text = "\(votes) times"
         case 1:
-            cell.titleLabel?.text = "You are in the top"
+            cell.titleLabel?.text = "It is in the top"
             var value: Double = 100 * cuRank
             value = round(10 * value) / 10
             cell.dataLabel?.text = "\(value)%"
         case 2:
-            cell.titleLabel?.text = "You were rated 10"
+            cell.titleLabel?.text = "It was rated 10"
             let value: Int = currentUser["n10"]!
             cell.dataLabel?.text = "\(value) times"
         case 3:
@@ -129,7 +129,7 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
             case SLComposeViewControllerResult.Done:
                 //Add code here to deal with it being completed
                 //Remember that dimissing the view is done for you, and sending the tweet to social media is automatic too. You could use this to give in game rewards?
-                buttonEvent("Profile", "Twitter Success")
+                buttonEvent("Profile", button: "Twitter Success")
                 break
             }
         }
@@ -155,7 +155,7 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
             case SLComposeViewControllerResult.Done:
                 //Add code here to deal with it being completed
                 //Remember that dimissing the view is done for you, and sending the tweet to social media is automatic too. You could use this to give in game rewards?
-                buttonEvent("Profile", "Facebook Success")
+                buttonEvent("Profile", button: "Facebook Success")
                 break
             }
         }

@@ -74,21 +74,44 @@ func popViewController(note: NSNotification, view: AnyObject) {
 }
 
 func pront(toPront: AnyObject) {
-    println("\(toPront)")
+    print("\(toPront)")
 }
 
 func randRange (lower: Int , upper: Int) -> Int {
     return lower + Int(arc4random_uniform(UInt32(upper - lower + 1)))
 }
 
-func shuffle<C: MutableCollectionType where C.Index == Int>(var list: C) -> C {
-    let c = count(list)
+/*func shuffle<C: MutableCollectionType where C.Index == Int>(var list: C) -> C {
+    let c = list.count
     if c < 2 { return list }
     for i in 0..<(c - 1) {
         let j = Int(arc4random_uniform(UInt32(c - i))) + i
         swap(&list[i], &list[j])
     }
     return list
+}*/
+
+extension CollectionType where Index == Int {
+    /// Return a copy of `self` with its elements shuffled
+    func shuffle() -> [Generator.Element] {
+        var list = Array(self)
+        list.shuffleInPlace()
+        return list
+    }
+}
+
+extension MutableCollectionType where Index == Int {
+    /// Shuffle the elements of `self` in-place.
+    mutating func shuffleInPlace() {
+        // empty and single-element collections don't shuffle
+        if count < 2 { return }
+        
+        for i in 0..<count - 1 {
+            let j = Int(arc4random_uniform(UInt32(count - i))) + i
+            guard i != j else { continue }
+            swap(&self[i], &self[j])
+        }
+    }
 }
 
 /*func playVideoAd() {
@@ -194,12 +217,12 @@ func scaleImage(image: UIImage, newSize: CGSize) -> UIImage {
 }
 
 func RBSquareImageTo(image: UIImage, size: CGSize) -> UIImage {
-    return RBResizeImage(RBSquareImage(image), size)
+    return RBResizeImage(RBSquareImage(image), targetSize: size)
 }
 
 func RBSquareImage(image: UIImage) -> UIImage {
-    var originalWidth  = image.size.width
-    var originalHeight = image.size.height
+    let originalWidth  = image.size.width
+    let originalHeight = image.size.height
     
     var edge: CGFloat
     if originalWidth > originalHeight {
@@ -208,13 +231,13 @@ func RBSquareImage(image: UIImage) -> UIImage {
         edge = originalWidth
     }
     
-    var posX = (originalWidth  - edge) / 2.0
-    var posY = (originalHeight - edge) / 2.0
+    let posX = (originalWidth  - edge) / 2.0
+    let posY = (originalHeight - edge) / 2.0
     
-    var cropSquare = CGRectMake(posX, posY, edge, edge)
+    let cropSquare = CGRectMake(posX, posY, edge, edge)
     
-    var imageRef = CGImageCreateWithImageInRect(image.CGImage, cropSquare);
-    return UIImage(CGImage: imageRef, scale: UIScreen.mainScreen().scale, orientation: image.imageOrientation)!
+    let imageRef = CGImageCreateWithImageInRect(image.CGImage, cropSquare);
+    return UIImage(CGImage: imageRef!, scale: UIScreen.mainScreen().scale, orientation: image.imageOrientation)
 }
 
 func RBResizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
@@ -258,14 +281,14 @@ func displayRatingRequest(viewController: UIViewController) {
         
         goToURL("https://itunes.apple.com/us/app/ratable/id1025633125?ls=1&mt=8")
         
-        buttonEvent("Rate Request", "Yes")
+        buttonEvent("Rate Request", button: "Yes")
         
     }
     alert.addAction(sureAction)
     
     let laterAction = UIAlertAction(title: "Later", style: .Default) { (action) in
         
-        buttonEvent("Rate Request", "Later")
+        buttonEvent("Rate Request", button: "Later")
         
     }
     
@@ -275,7 +298,7 @@ func displayRatingRequest(viewController: UIViewController) {
         
         defaults.setObject("true", forKey: "Rating")
         
-        buttonEvent("Rate Request", "Yes")
+        buttonEvent("Rate Request", button: "Yes")
         
     }
     alert.addAction(noAction)
@@ -292,14 +315,14 @@ func displayShareRequest(viewController: UIViewController) {
         
         socialShare(viewController)
         
-        buttonEvent("Share Request", "Yes")
+        buttonEvent("Share Request", button: "Yes")
         
     }
     alert.addAction(sureAction)
     
     let laterAction = UIAlertAction(title: "Later", style: .Default) { (action) in
         
-        buttonEvent("Share Request", "Later")
+        buttonEvent("Share Request", button: "Later")
         
     }
     
@@ -309,7 +332,7 @@ func displayShareRequest(viewController: UIViewController) {
         
         defaults.setObject("true", forKey: "Share")
         
-        buttonEvent("Share Request", "No")
+        buttonEvent("Share Request", button: "No")
         
     }
     alert.addAction(noAction)

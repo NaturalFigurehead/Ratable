@@ -13,7 +13,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        showActivityIndicator(self.view, false)
+        showActivityIndicator(self.view, isEmbeded: false)
         
         //set up observer for album selection
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "displayAlbumSelection:", name: "albumSelection", object: nil)
@@ -36,10 +36,10 @@ class ViewController: UIViewController {
                 if error == nil {
                     let result = response as! String
                     let resultData = result.componentsSeparatedByString(" ")
-                    adFrequency = resultData[0].toInt()!
-                    saveRate = resultData[1].toInt()!
-                    newUserTime = resultData[2].toInt()!
-                    newUserCount = resultData[3].toInt()!
+                    adFrequency = Int(resultData[0])!
+                    saveRate = Int(resultData[1])!
+                    newUserTime = Int(resultData[2])!
+                    newUserCount = Int(resultData[3])!
                 }
             }
             
@@ -96,17 +96,17 @@ class ViewController: UIViewController {
                                 (maxIndex: PFObject?, error: NSError?) -> Void in
                                 
                                 if error != nil {
-                                    displayAlertView("Error", "There was an error loading data. Please try again later.", "Ok", self)
+                                    displayAlertView("Error", message: "There was an error loading data. Please try again later.", action: "Ok", viewController: self)
                                 }
                                     
                                 else if let maxIndex = maxIndex {
                                     
                                     //list random indexes in the max index range
                                     var indexes: [Int] = []
-                                    var max = maxIndex["i"] as! Int
+                                    let max = maxIndex["i"] as! Int
                                     var i = 0
                                     while i < 900 && max > 100 {
-                                        let n = randRange(1, max - 100)
+                                        let n = randRange(1, upper: max - 100)
                                         indexes.append(n)
                                         i += 1
                                     }
@@ -116,7 +116,7 @@ class ViewController: UIViewController {
                                         indexes.append(n)
                                         i += 1
                                     }
-                                    indexes.sort {
+                                    indexes.sortInPlace {
                                         return $0 < $1
                                     }
                                     
@@ -134,7 +134,7 @@ class ViewController: UIViewController {
                                             
                                             //filter users
                                             let users: [PFObject] = objects as! Array
-                                            var unrated: [PFObject] = users.filter{ !contains(rated, $0) }
+                                            var unrated: [PFObject] = users.filter{ !rated.contains($0) }
                                             if unrated.count < 6 {
                                                 pront("not enough")
                                                 unrated = users
@@ -147,7 +147,7 @@ class ViewController: UIViewController {
                                             
                                         }
                                         else {
-                                            displayAlertView("Error", "There was an error loading data. Please try again later.", "Ok", self)
+                                            displayAlertView("Error", message: "There was an error loading data. Please try again later.", action: "Ok", viewController: self)
                                         }
                                     })
                                 }
@@ -164,13 +164,13 @@ class ViewController: UIViewController {
                         }
                     }
                     else {
-                        displayAlertView("Error", "There was an error loading data. Please try again later.", "Ok", self)
+                        displayAlertView("Error", message: "There was an error loading data. Please try again later.", action: "Ok", viewController: self)
                     }
                 })
             }
             
             else {
-                displayAlertView("Error", "There was an error loading data. Please try again later.", "Ok", self)
+                displayAlertView("Error", message: "There was an error loading data. Please try again later.", action: "Ok", viewController: self)
             }
             
         })
@@ -256,7 +256,7 @@ class ViewController: UIViewController {
                         let userToRate = SmallUser(object: user)
                         smallUsersToRate.append(userToRate)
                     }
-                    smallUsersToRate = shuffle(smallUsersToRate)
+                    //smallUsersToRate = shuffle(smallUsersToRate)
                     smallUsersToRate = newSmallUsers + smallUsersToRate
                     for x in smallUsersToRate {
                         pront("id: \(x.id), url: \(x.image)")
@@ -287,7 +287,7 @@ class ViewController: UIViewController {
                 
             }
             else {
-                var localQuery = PFQuery(className:"Score_Data")
+                let localQuery = PFQuery(className:"Score_Data")
                 localQuery.fromPinWithName("Current_User")
                 localQuery.findObjectsInBackgroundWithBlock({ (objects: [AnyObject]?, error: NSError?) -> Void in
                     if error == nil {
@@ -315,7 +315,7 @@ class ViewController: UIViewController {
                                 let userToRate = SmallUser(object: user)
                                 smallUsersToRate.append(userToRate)
                             }
-                            smallUsersToRate = shuffle(smallUsersToRate)
+                            //smallUsersToRate = shuffle(smallUsersToRate)
                             
                             //queue up users
                             var i = 0
@@ -348,6 +348,8 @@ class ViewController: UIViewController {
             }
         })
     }
+    
+    
 }
     
     

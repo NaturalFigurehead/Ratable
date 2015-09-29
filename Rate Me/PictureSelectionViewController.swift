@@ -32,7 +32,7 @@ class PictureSelectionViewController: UICollectionViewController, UICollectionVi
         cell.layer.shouldRasterize = true
         cell.layer.rasterizationScale = UIScreen.mainScreen().scale
         let photo = pictures[indexPath.row] as Picture
-        cell.imageView.image = RBSquareImageTo(photo.image, bestSize)
+        cell.imageView.image = RBSquareImageTo(photo.image, size: bestSize)
         cell.backgroundColor = UIColor.blackColor()
         return cell
     }

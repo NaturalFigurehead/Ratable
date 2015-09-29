@@ -33,7 +33,7 @@ var cuError = false
 var currentUser: [String: Int] = Dictionary()
 func setCurrentUser() {
     pront("cu")
-    var query = PFQuery(className:"Score_Data")
+    let query = PFQuery(className:"Score_Data")
     query.whereKey("user", equalTo: PFUser.currentUser()!)
     query.findObjectsInBackgroundWithBlock({ (objects: [AnyObject]?, error: NSError?) -> Void in
         if error == nil {
@@ -55,7 +55,7 @@ func setCurrentUser() {
             user.pinInBackgroundWithName("Current_User")
         }
         else {
-            var localQuery = PFQuery(className:"Score_Data")
+            let localQuery = PFQuery(className:"Score_Data")
             localQuery.fromPinWithName("Current_User")
             localQuery.findObjectsInBackgroundWithBlock({ (objects: [AnyObject]?, error: NSError?) -> Void in
                 if error == nil {
@@ -200,14 +200,14 @@ func queueUsers() {
                     
                     //list random indexes in the max index range
                     var indexes: [Int] = []
-                    var max = maxIndex["i"] as! Int
+                    let max = maxIndex["i"] as! Int
                     var i = 0
                     while i < 1000 {
-                        let n = randRange(1, max)
+                        let n = randRange(1, upper: max)
                         indexes.append(n)
                         i += 1
                     }
-                    indexes.sort {
+                    indexes.sortInPlace {
                         return $0 < $1
                     }
                     
@@ -225,7 +225,7 @@ func queueUsers() {
                             
                             //filter users
                             let users: [PFObject] = objects as! Array
-                            let unrated: [PFObject] = users.filter{ !contains(rated, $0) }
+                            let unrated: [PFObject] = users.filter{ !rated.contains($0) }
                             pront("Users: \(users)")
                             pront("Unrated: \(unrated)")
                             pront("Rated: \(rated)")
@@ -244,7 +244,7 @@ func queueUsers() {
                                     let userToRate = SmallUser(object: user)
                                     smallUserList.append(userToRate)
                                 }
-                                smallUserList = shuffle(smallUserList.filter{ !contains(smallUsersToRate, $0) })
+                                smallUserList = /*shuffle(*/smallUserList.filter{ !smallUsersToRate.contains($0) }//)
                                 smallUsersToRate = smallUsersToRate + smallUserList
                                 
                                 //queue of users
@@ -287,10 +287,10 @@ func queueMoreUsers() {
             
             //list random indexes in the max index range
             var indexes: [Int] = []
-            var max = maxIndex["i"] as! Int
+            let max = maxIndex["i"] as! Int
             var i = 0
             while i < 1000 {
-                let n = randRange(1, max)
+                let n = randRange(1, upper: max)
                 indexes.append(n)
                 i += 1
             }
@@ -320,7 +320,7 @@ func queueMoreUsers() {
                             let userToRate = SmallUser(object: user)
                             smallUserList.append(userToRate)
                         }
-                        smallUserList = shuffle(smallUserList.filter{ !contains(smallUsersToRate, $0) })
+                        smallUserList = /*shuffle(*/smallUserList.filter{ !smallUsersToRate.contains($0) }//)
                         smallUsersToRate = smallUsersToRate + smallUserList
                         for x in smallUsersToRate {
                             pront("id: \(x.id), url: \(x.image)")
@@ -372,7 +372,7 @@ func testTimeFetch() {
         pront(2)
         if error == nil {
             pront(objects!)
-            var x = objects![0] as! PFObject
+            let x = objects![0] as! PFObject
             pront("5\(x)")
             let y = x.createdAt
             pront("6\(y)")
@@ -438,7 +438,7 @@ func newTest() {
             
         }
         else {
-            var localQuery = PFQuery(className:"Score_Data")
+            let localQuery = PFQuery(className:"Score_Data")
             localQuery.fromPinWithName("Current_User")
             localQuery.findObjectsInBackgroundWithBlock({ (objects: [AnyObject]?, error: NSError?) -> Void in
                 if error == nil {

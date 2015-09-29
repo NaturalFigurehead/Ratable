@@ -16,7 +16,7 @@ class PictureConfirmViewController: UIViewController {
     @IBAction func saveButtonAction(sender: UIBarButtonItem) {
         
         //alert user of requirements
-        let alert = UIAlertController(title: "Attention", message: "For best results please make sure that your face is clearly visible in the picture you select. No sunglasses and no group photos please.", preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: "Attention", message: "Please make sure that your face is clearly visible in the picture you select. No group photos please.", preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Default, handler: nil))
         
         //user confirms pick
@@ -49,7 +49,7 @@ class PictureConfirmViewController: UIViewController {
             self.performSegueWithIdentifier("PCVC to MPVC", sender: self)
             self.removeFromParentViewController()
             
-            buttonEvent("Picture Confirm", "Confirm")
+            buttonEvent("Picture Confirm", button: "Confirm")
             
         }
         alert.addAction(useAction)

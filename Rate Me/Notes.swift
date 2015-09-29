@@ -214,7 +214,7 @@ func dummyUsers() {
         for var n = 0; n < 11; n++ {
             dummy["n\(n)"] = 0
         }
-        var dummyACL = PFACL()
+        let dummyACL = PFACL()
         dummyACL.setPublicReadAccess(true)
         dummyACL.setPublicWriteAccess(false)
         dummy.ACL = dummyACL
@@ -243,7 +243,7 @@ func men() {
         for var n = 0; n < 11; n++ {
             dummy["n\(n)"] = 0
         }
-        var dummyACL = PFACL()
+        let dummyACL = PFACL()
         dummyACL.setPublicReadAccess(true)
         dummyACL.setPublicWriteAccess(false)
         dummy.ACL = dummyACL

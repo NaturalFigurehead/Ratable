@@ -40,7 +40,7 @@ class InfoViewController: UITableViewController, UIPickerViewDataSource, UIPicke
         loginView.readPermissions = ["public_profile", "email", "user_friends", "user_photos"]
         loginView.delegate = self
         
-        buttonEvent("Info", "Open")
+        buttonEvent("Info", button: "Open")
     }
     
     func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError!) {
@@ -62,7 +62,7 @@ class InfoViewController: UITableViewController, UIPickerViewDataSource, UIPicke
     
     func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
         
-        buttonEvent("Info", "Facebook Logout")
+        buttonEvent("Info", button: "Facebook Logout")
         
         PFUser.logOut()
         voteCount = 0
@@ -81,26 +81,26 @@ class InfoViewController: UITableViewController, UIPickerViewDataSource, UIPicke
         return 3
     }
     
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
+    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return genders[row]
     }
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        buttonEvent("Info", "Gender Pick")
+        buttonEvent("Info", button: "Gender Pick")
         
         switch row {
         case 0:
             if currentGenderPref() != "male" {
                 defaults.setObject("male", forKey: "Gender_Preference")
                 PFObject.unpinAllObjectsInBackgroundWithName("To_Rate")
-                showActivityIndicator(self.view, true)
+                showActivityIndicator(self.view, isEmbeded: true)
                 self.queueUsers()
             }
         case 1:
             if currentGenderPref() != "female" {
                 defaults.setObject("female", forKey: "Gender_Preference")
                 PFObject.unpinAllObjectsInBackgroundWithName("To_Rate")
-                showActivityIndicator(self.view, true)
+                showActivityIndicator(self.view, isEmbeded: true)
                 self.queueUsers()
             }
             defaults.setObject("female", forKey: "Gender_Preference")
@@ -108,7 +108,7 @@ class InfoViewController: UITableViewController, UIPickerViewDataSource, UIPicke
             if currentGenderPref() != "all" {
                 defaults.setObject("all", forKey: "Gender_Preference")
                 PFObject.unpinAllObjectsInBackgroundWithName("To_Rate")
-                showActivityIndicator(self.view, true)
+                showActivityIndicator(self.view, isEmbeded: true)
                 self.queueUsers()
             }
             defaults.setObject("all", forKey: "Gender_Preference")
@@ -125,7 +125,7 @@ class InfoViewController: UITableViewController, UIPickerViewDataSource, UIPicke
                 if error == nil {
                     pront(1)
                     // Run UI logic that informs user the product has been purchased, such as displaying an alert view.
-                    displayAlertView("Success!", "Ads will no longer be shown", "Ok", self)
+                    displayAlertView("Success!", message: "Ads will no longer be shown", action: "Ok", viewController: self)
                 }
                 else {
                     pront(2)
@@ -137,19 +137,19 @@ class InfoViewController: UITableViewController, UIPickerViewDataSource, UIPicke
             case 0:
                 //share
                 socialShare(self)
-                buttonEvent("Info", "Share")
+                buttonEvent("Info", button: "Share")
             case 1:
                 //rate
                 goToURL("https://itunes.apple.com/us/app/ratable/id1025633125?ls=1&mt=8")
-                buttonEvent("Info", "Rate")
+                buttonEvent("Info", button: "Rate")
             case 2:
                 //follow
                 goToURL("https://twitter.com/OlivrRzk")
-                buttonEvent("Info", "Follow")
+                buttonEvent("Info", button: "Follow")
             case 3:
                 //like
                 goToURL("https://www.facebook.com/Ratable")
-                buttonEvent("Info", "Like")
+                buttonEvent("Info", button: "Like")
             default:
                 break
             }
@@ -159,11 +159,11 @@ class InfoViewController: UITableViewController, UIPickerViewDataSource, UIPicke
             case 0:
                 //privacy policy
                 goToURL("https://itunes.apple.com/us/app/ratable/id1025633125?ls=1&mt=8")
-                buttonEvent("Info", "Privacy Policy")
+                buttonEvent("Info", button: "Privacy Policy")
             case 1:
                 //terms of service
                 goToURL("https://itunes.apple.com/us/app/ratable/id1025633125?ls=1&mt=8")
-                buttonEvent("Info", "Terms of Service")
+                buttonEvent("Info", button: "Terms of Service")
             default:
                 break
             }
@@ -176,7 +176,7 @@ class InfoViewController: UITableViewController, UIPickerViewDataSource, UIPicke
             } else {
                 self.showSendMailErrorAlert()
             }
-            buttonEvent("Info", "Email")
+            buttonEvent("Info", button: "Email")
         }
         else if indexPath.section == 5 && indexPath.row == 1 {
             
@@ -188,7 +188,7 @@ class InfoViewController: UITableViewController, UIPickerViewDataSource, UIPicke
             //user confirms deletion
             let useAction = UIAlertAction(title: "Continue", style: .Default) { (action) in
                 
-                buttonEvent("Info", "Delete")
+                buttonEvent("Info", button: "Delete")
                 
                 //delete user data on score data object
                 let data = PFObject(withoutDataWithClassName: "Score_Data", objectId: scoreID)
@@ -255,7 +255,7 @@ class InfoViewController: UITableViewController, UIPickerViewDataSource, UIPicke
     
     // MARK: MFMailComposeViewControllerDelegate
     
-    func mailComposeController(controller: MFMailComposeViewController!, didFinishWithResult result: MFMailComposeResult, error: NSError!) {
+    func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
         controller.dismissViewControllerAnimated(true, completion: nil)
         
     }
@@ -287,10 +287,10 @@ class InfoViewController: UITableViewController, UIPickerViewDataSource, UIPicke
                         
                         //list random indexes in the max index range
                         var indexes: [Int] = []
-                        var max = maxIndex["i"] as! Int
+                        let max = maxIndex["i"] as! Int
                         var i = 0
                         while i < 900 && max > 100 {
-                            let n = randRange(1, max - 100)
+                            let n = randRange(1, upper: max - 100)
                             indexes.append(n)
                             i += 1
                         }
@@ -300,7 +300,7 @@ class InfoViewController: UITableViewController, UIPickerViewDataSource, UIPicke
                             indexes.append(n)
                             i += 1
                         }
-                        indexes.sort {
+                        indexes.sortInPlace {
                             return $0 < $1
                         }
                         
@@ -318,7 +318,7 @@ class InfoViewController: UITableViewController, UIPickerViewDataSource, UIPicke
                                 
                                 //filter users
                                 let users: [PFObject] = objects as! Array
-                                var unrated: [PFObject] = users.filter{ !contains(rated, $0) }
+                                var unrated: [PFObject] = users.filter{ !rated.contains($0) }
                                 if unrated.count < 6 {
                                     unrated = users
                                 }
@@ -340,7 +340,7 @@ class InfoViewController: UITableViewController, UIPickerViewDataSource, UIPicke
                                         let userToRate = SmallUser(object: user)
                                         smallUsersToRate.append(userToRate)
                                     }
-                                    smallUsersToRate = shuffle(smallUsersToRate)
+                                    //smallUsersToRate = shuffle(smallUsersToRate)
                                     
                                     //queue of users
                                     var i = 0

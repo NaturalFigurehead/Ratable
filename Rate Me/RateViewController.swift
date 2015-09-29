@@ -91,7 +91,7 @@ class RateViewController: UIViewController {
                     saveRatedUsers()
                 }
                 
-                buttonEvent("Rate", "Rate")
+                buttonEvent("Rate", button: "Rate")
                 
             }
             self.score = 5
@@ -103,12 +103,12 @@ class RateViewController: UIViewController {
             self.addUser()
             
             
-            buttonEvent("Rate", "Next")
+            buttonEvent("Rate", button: "Next")
             
         }
         else {
-            showActivityIndicator(self.imageView, false)
-            buttonEvent("Rate", "Buffer")
+            showActivityIndicator(self.imageView, isEmbeded: false)
+            buttonEvent("Rate", button: "Buffer")
         }
     }
     

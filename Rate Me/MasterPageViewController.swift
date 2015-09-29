@@ -25,8 +25,9 @@ class MasterPageViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     @IBAction func logoButton(sender: UIBarButtonItem) {
-        goToURL("http://ratableapp.com/")
-        buttonEvent("Master", "Logo")
+        //goToURL("http://ratableapp.com/")
+        buttonEvent("Master", button: "Logo")
+        //self.presentViewController(vcWithName("TNC")!, animated: true, completion: nil)
     }
     
     
@@ -50,7 +51,7 @@ class MasterPageViewController: UIViewController, UIScrollViewDelegate {
         
         //increment session count
         if !(sessionCount() > 0) {
-            displayAlertView("Hello", "It's time to rate someone. Give them a score using the orange slider below. When you have it picked out press the green check mark. When you're done press the blue arrow to move on to the next person.", "Ok", self)
+            displayAlertView("Hello", message: "It's time to rate a selfie. Give it a score using the orange slider below. When you have it picked out press the green check mark. When you're done press the blue arrow to move on to the next picture.", action: "Ok", viewController: self)
             defaults.setInteger(1, forKey: "Sessions")
         }
         else {
@@ -98,8 +99,9 @@ class MasterPageViewController: UIViewController, UIScrollViewDelegate {
         self.removeFromParentViewController()
     }
     
-    override  func supportedInterfaceOrientations() -> Int {
-        return UIInterfaceOrientation.Portrait.rawValue
+    override  func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        //return UIInterfaceOrientation.Portrait.rawValue
+        return UIInterfaceOrientationMask.Portrait
     }
     
     override func shouldAutorotate() -> Bool {

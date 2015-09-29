@@ -14,7 +14,7 @@ class AlbumSelectionViewController: UITableViewController{
         super.viewDidLoad()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "popViewController:", name: "picSaved", object: nil)
         if !profilePicIsSet() {
-            displayAlertView("Welcome!", "On Ratable other users will see your picture and rate your looks 1-10. You do the same for them. Now pick a selfie from Facebook to be your profile picture.", "Ok", self)
+            displayAlertView("Welcome!", message: "On Ratable you post a selfie and other users rate it 1-10. Then you rate their selfies. Pick your selfie from Facebook.", action: "Ok", viewController: self)
         }
     }
     
@@ -30,7 +30,7 @@ class AlbumSelectionViewController: UITableViewController{
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath)
         -> UITableViewCell {
             let cell = tableView.dequeueReusableCellWithIdentifier("AlbumCell", forIndexPath: indexPath)
-                as! UITableViewCell
+                
             let album = albums[indexPath.row] as Album
             cell.textLabel?.text = album.name
             cell.detailTextLabel?.text = "\(album.photos)"
@@ -49,7 +49,7 @@ class AlbumSelectionViewController: UITableViewController{
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        showActivityIndicator(self.view, true)
+        showActivityIndicator(self.view, isEmbeded: true)
         
         let selectedAlbum = albums[indexPath.row] as Album
         getPicturesForAlbum(selectedAlbum.id)
