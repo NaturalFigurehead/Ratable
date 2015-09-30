@@ -65,6 +65,9 @@
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B5P-7y-VzT">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                <variation key="heightClass=regular" misplaced="YES">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                </variation>
                             </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -2089,8 +2092,7 @@
                                                         <exclude reference="UoE-h3-miZ"/>
                                                     </mask>
                                                 </variation>
-                                                <variation key="heightClass=regular" misplaced="YES">
-                                                    <rect key="frame" x="2" y="25" width="80" height="75"/>
+                                                <variation key="heightClass=regular">
                                                     <mask key="constraints">
                                                         <exclude reference="UoE-h3-miZ"/>
                                                     </mask>
