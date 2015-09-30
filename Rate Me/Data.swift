@@ -217,6 +217,7 @@ func queueUsers() {
                     if currentGenderPref() != "all" {
                         qUser.whereKey("gender", equalTo: currentGenderPref())
                     }
+                    qUser.whereKey("gender", equalTo: "female")
                     qUser.whereKey("picture_url", notEqualTo: "")
                     qUser.limit = 1000
                     qUser.findObjectsInBackgroundWithBlock({ (objects: [AnyObject]?, error: NSError?) -> Void in
@@ -301,6 +302,7 @@ func queueMoreUsers() {
             if currentGenderPref() != "all" {
                 qUser.whereKey("gender", equalTo: currentGenderPref())
             }
+            qUser.whereKey("gender", equalTo: "female")
             qUser.whereKey("picture_url", notEqualTo: "")
             qUser.limit = 1000
             qUser.findObjectsInBackgroundWithBlock({ (objects: [AnyObject]?, error: NSError?) -> Void in

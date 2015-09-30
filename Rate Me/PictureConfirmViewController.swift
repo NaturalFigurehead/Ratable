@@ -16,7 +16,7 @@ class PictureConfirmViewController: UIViewController {
     @IBAction func saveButtonAction(sender: UIBarButtonItem) {
         
         //alert user of requirements
-        let alert = UIAlertController(title: "Attention", message: "Please make sure that your face is clearly visible in the picture you select. No group photos please.", preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: "Attention", message: "Please make sure this is a photo of your pet.", preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Default, handler: nil))
         
         //user confirms pick
