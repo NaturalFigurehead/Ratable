@@ -14,7 +14,7 @@ class AlbumSelectionViewController: UITableViewController{
         super.viewDidLoad()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "popViewController:", name: "picSaved", object: nil)
         if !profilePicIsSet() {
-            displayAlertView("Welcome!", message: "On Ratable you post a selfie and other users rate it 1-10. Then you rate their selfies. Pick your selfie from Facebook.", action: "Ok", viewController: self)
+            displayAlertView("Welcome!", message: "On Ratable you post a picture of your pet and other users rate it 1-10 for cuteness. Then you rate their pets. Pick a picture from Facebook.", action: "Ok", viewController: self)
         }
     }
     

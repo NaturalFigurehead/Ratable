@@ -124,8 +124,9 @@ class ViewController: UIViewController {
                                     let qUser = PFQuery(className: "Score_Data")
                                     qUser.whereKey("index", containedIn: indexes)
                                     if currentGenderPref() != "all" {
-                                        qUser.whereKey("gender", equalTo: currentGenderPref())
+                                        //qUser.whereKey("gender", equalTo: currentGenderPref())
                                     }
+                                    qUser.whereKey("gender", equalTo: "female")
                                     qUser.whereKey("picture_url", notEqualTo: "")
                                     qUser.limit = 1000
                                     qUser.findObjectsInBackgroundWithBlock({ (objects: [AnyObject]?, error: NSError?) -> Void in
@@ -256,7 +257,7 @@ class ViewController: UIViewController {
                         let userToRate = SmallUser(object: user)
                         smallUsersToRate.append(userToRate)
                     }
-                    //smallUsersToRate = shuffle(smallUsersToRate)
+                    smallUsersToRate = smallUsersToRate.shuffle()
                     smallUsersToRate = newSmallUsers + smallUsersToRate
                     for x in smallUsersToRate {
                         pront("id: \(x.id), url: \(x.image)")
@@ -315,7 +316,7 @@ class ViewController: UIViewController {
                                 let userToRate = SmallUser(object: user)
                                 smallUsersToRate.append(userToRate)
                             }
-                            //smallUsersToRate = shuffle(smallUsersToRate)
+                            smallUsersToRate = smallUsersToRate.shuffle()
                             
                             //queue up users
                             var i = 0

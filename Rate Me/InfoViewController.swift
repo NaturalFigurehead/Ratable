@@ -118,7 +118,7 @@ class InfoViewController: UITableViewController, UIPickerViewDataSource, UIPicke
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if indexPath.section == 1 {
+        if indexPath.section == 0 {
             //remove ads
             PFPurchase.buyProduct("ratable.removeads") {
                 (error: NSError?) -> Void in
@@ -132,7 +132,7 @@ class InfoViewController: UITableViewController, UIPickerViewDataSource, UIPicke
                 }
             }
         }
-        if indexPath.section == 2 {
+        if indexPath.section == 1 {
             switch indexPath.row {
             case 0:
                 //share
@@ -154,7 +154,7 @@ class InfoViewController: UITableViewController, UIPickerViewDataSource, UIPicke
                 break
             }
         }
-        else if indexPath.section == 3 {
+        else if indexPath.section == 2 {
             switch indexPath.row {
             case 0:
                 //privacy policy
@@ -168,7 +168,7 @@ class InfoViewController: UITableViewController, UIPickerViewDataSource, UIPicke
                 break
             }
         }
-        else if indexPath.section == 4 {
+        else if indexPath.section == 3 {
             //contact
             let mailComposeViewController = configuredMailComposeViewController()
             if MFMailComposeViewController.canSendMail() {
@@ -178,7 +178,7 @@ class InfoViewController: UITableViewController, UIPickerViewDataSource, UIPicke
             }
             buttonEvent("Info", button: "Email")
         }
-        else if indexPath.section == 5 && indexPath.row == 1 {
+        else if indexPath.section == 4 && indexPath.row == 1 {
             
             //delete account
             

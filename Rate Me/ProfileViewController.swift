@@ -52,7 +52,7 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 6
+        return 5
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -60,20 +60,20 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
             as! ProfileCell
         switch indexPath.row {
         case 0:
-            cell.titleLabel?.text = "Your selfie was voted on"
+            cell.titleLabel?.text = "Your pet was voted on"
             let votes: Int = currentUser["Votes"]!
             cell.dataLabel?.text = "\(votes) times"
-        case 1:
+        /*case 1:
             cell.titleLabel?.text = "It is in the top"
             var value: Double = 100 * cuRank
             value = round(10 * value) / 10
-            cell.dataLabel?.text = "\(value)%"
-        case 2:
+            cell.dataLabel?.text = "\(value)%"*/
+        case 1:
             cell.titleLabel?.text = "It was rated 10"
             let value: Int = currentUser["n10"]!
             cell.dataLabel?.text = "\(value) times"
-        case 3:
-            cell.titleLabel?.text = "On average you rated others"
+        case 2:
+            cell.titleLabel?.text = "On average you rated pets"
             let total = Double(currentUser["Total_Score_Given"]!)
             let votes = Double(currentUser["Votes_Given"]!)
             var average = Double()
@@ -85,12 +85,12 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
                 average = 0
             }
             cell.dataLabel?.text = "\(average)"
-        case 4:
+        case 3:
             cell.titleLabel?.text = "You voted"
             let value: Int = currentUser["Votes_Given"]!
             cell.dataLabel?.text = "\(value) times"
-        case 5:
-            cell.titleLabel?.text = "You tend to rate others"
+        case 4:
+            cell.titleLabel?.text = "You tend to rate pets"
             let total = cuScoreDif
             let votes = Double(currentUser["Votes_Given"]!)
             var average = Double()
