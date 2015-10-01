@@ -58,8 +58,9 @@ class User: NSObject {
     init(user: SmallUser) {
         self.votes = Double(user.votes)
         self.name = user.name
-        let picURL = user.image
-        let url =  NSURL(string: picURL)
+        var picURL = user.image
+        picURL = picURL.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
+        let url = NSURL(string: picURL)
         let data = NSData(contentsOfURL: url!)
         let image = UIImage(data: data!)
         if image == nil {
